@@ -1,3 +1,10 @@
+	Changes made since 1.0.1 (2019/06/30).
+
+Use AVX512VL XOP-like bit rotates for faster Salsa20 on supporting CPUs.
+
+Implemented a little-known SHA-2 Maj() optimization proposed by Wei Dai.
+
+
 	Changes made between 1.0.0 (2018/07/12) and 1.0.1 (2019/06/30).
 
 Fill the destination buffer with all set bits on error for fail-safety
