@@ -157,22 +157,28 @@ struct option {
 static char const usage[] = "\
 Usage: " PROGRAM_NAME " [OPTIONS]\n\
 Options:\n\
-  -a, --algo=ALGO       specify the algorithm to use\n\
+  -a, --algo=ALGO       specify the algorithm to use (case insensitive)\n\
+                          CPUpower:      CPUchain\n\
                           Power2b:       MicroBitcoin\n\
                           Yescrypt:      GlobalBoost-Y, Myriad, Unitus\n\
                           YescryptR8:    Mateable, BitZeny\n\
                           YescryptR16:   Fennec, GoldCash, ELI\n\
                           YescryptR32:   DMS, WAVI\n\
-                          Yespower:      CranePay, Bellcoin, Veco, SwampCoin\n\
+                          Yespower:      Bellcoin, Veco, SwampCoin\n\
                           YespowerAdvc:  AdventureCoin\n\
+                          YespowerEqpay: EQPAY\n\
+                          YespowerLtncg: CrionicCoin, LTNCG\n\
+                          YespowerMgpc:  MagpieCoin\n\
+                          YespowerR16:   Yenten\n\
+                          YespowerSugar: Sugarchain (default)\n\
+                          YespowerUrx:   UraniumX\n\
+                          YespowerTide:  TideCoin\n\
+                        Historic algorithms:\n\
+                          YespowerArwn:  ARWN\n\
                           YespowerIots:  IOTS\n\
                           YespowerIso:   IsotopeC\n\
                           YespowerItc:   Intercoin\n\
                           YespowerLitb:  LightBit\n\
-                          YespowerR16:   Yentenn\
-                          YespowerSugar: Sugarchain (default)\n\
-                          YespowerUrx:   UraniumX\n\
-                        ALGO is case insensitive\n\
   -o, --url=URL         URL of mining server\n\
   -O, --userpass=U:P    username:password pair for mining server\n\
   -u, --user=USERNAME   username for mining server\n\
@@ -1189,13 +1195,19 @@ static void *miner_thread(void *userdata)
 			case ALGO_YESCRYPT_R32:
 			case ALGO_YESPOWER:
 			case ALGO_YESPOWER_ADVC:
+			case ALGO_YESPOWER_ARWN:
+			case ALGO_YESPOWER_CPU:
+			case ALGO_YESPOWER_EQPAY:
 			case ALGO_YESPOWER_IOTS:
 			case ALGO_YESPOWER_ISO:
 			case ALGO_YESPOWER_ITC:
 			case ALGO_YESPOWER_LITB:
+			case ALGO_YESPOWER_LTNCG:
+			case ALGO_YESPOWER_MGPC:
 			case ALGO_YESPOWER_POWER2B:
 			case ALGO_YESPOWER_R16:
 			case ALGO_YESPOWER_SUGAR:
+			case ALGO_YESPOWER_TIDE:
 			case ALGO_YESPOWER_URX:
 				max64 = 499;
 				break;
@@ -1210,6 +1222,7 @@ static void *miner_thread(void *userdata)
 		gettimeofday(&tv_start, NULL);
 
 		/* scan nonces for a proof-of-work hash */
+/*
 		switch (opt_algo) {
 
 		case ALGO_YESPOWER_SUGAR:
@@ -1276,9 +1289,18 @@ static void *miner_thread(void *userdata)
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
-			/* should never happen */
+			// should never happen 
 			//goto out;
 		}
+*/
+		if (opt_algo == ALGO_YESPOWER_POWER2B)
+			rc = scanhash_mbc_yespower(
+				thr_id, work.data, work.target, max_nonce, &hashes_done
+			);
+		else
+			rc = scanhash_yespower(
+				thr_id, work.data, work.target, max_nonce, &hashes_done
+			);
 
 		/* record scanhash elapsed time */
 		gettimeofday(&tv_end, NULL);

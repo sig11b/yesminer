@@ -66,11 +66,101 @@ bool setup_variant()
 		params.r = 32;
 		params.pers = (const uint8_t*) "WaviBanana";
 		break;
+	case ALGO_YESPOWER:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = NULL;
+		break;
 	case ALGO_YESPOWER_ADVC:
 		params.version = YESPOWER_1_0;
 		params.N = 2048;
 		params.r = 32;
 		params.pers = (const uint8_t*) "Let the quest begin";
+		break;
+	case ALGO_YESPOWER_ARWN:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "ARWN";
+		break;
+	case ALGO_YESPOWER_CPU:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "CPUpower: The number of CPU working or available for proof-of-work mining";
+		break;
+	case ALGO_YESPOWER_EQPAY:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "The gods had gone away, and the ritual of the religion continued senselessly, uselessly.";
+		break;
+	case ALGO_YESPOWER_IOTS:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "Iots is committed to the development of IOT";
+		break;
+	case ALGO_YESPOWER_ISO:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "IsotopeC";
+		break;
+	case ALGO_YESPOWER_ITC:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "InterITC";
+		break;
+	case ALGO_YESPOWER_LITB:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "LITBpower: The number of LITB working or available for proof-of-work mining";
+		break;
+	case ALGO_YESPOWER_LTNCG:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "LTNCGYES";
+		break;
+	case ALGO_YESPOWER_MGPC:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "Magpies are birds of the Corvidae family.";
+		break;
+	case ALGO_YESPOWER_POWER2B:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "Now I am become Death, the destroyer of worlds";
+		break;
+	case ALGO_YESPOWER_R16:
+		params.version = YESPOWER_1_0;
+		params.N = 4096;
+		params.r = 16;
+		params.pers = NULL;
+		break;
+	case ALGO_YESPOWER_SUGAR:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "Satoshi Nakamoto 31/Oct/2008 Proof-of-work is essentially one-CPU-one-vote";
+		break;
+	case ALGO_YESPOWER_TIDE:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 8;
+		params.pers = NULL;
+		break;
+	case ALGO_YESPOWER_URX:
+		params.version = YESPOWER_1_0;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = (const uint8_t*) "UraniumX";
 		break;
 	};
 	if (params.pers == NULL) {
