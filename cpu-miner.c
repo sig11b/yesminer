@@ -100,6 +100,7 @@ struct workio_cmd {
 	} u;
 };
 
+/*
 enum algos {
 	ALGO_SUGAR_YESPOWER_1_0_1,
 	ALGO_ISO_YESPOWER_1_0_1,
@@ -110,9 +111,15 @@ enum algos {
 	ALGO_ITC_YESPOWER_1_0_1,
 	ALGO_MBC_YESPOWER_1_0_1,
 	ALGO_YTN_YESPOWER_1_0_1,
+	ALGO_ADVC_YESPOWER_1_0_1,
 };
+*/
 
 static const char *algo_names[] = {
+	[ALGO_YESCRYPT]		= "yescrypt",
+	[ALGO_YESCRYPT_R8]	= "yescryptr8",
+	[ALGO_YESCRYPT_R16]	= "yescryptr16",
+	[ALGO_YESCRYPT_R32]	= "yescryptr32",
 	[ALGO_SUGAR_YESPOWER_1_0_1]	= "YespowerSugar",
 	[ALGO_ISO_YESPOWER_1_0_1]	= "YespowerIso",
 	[ALGO_NULL_YESPOWER_1_0_1]	= "YespowerNull",
@@ -122,6 +129,7 @@ static const char *algo_names[] = {
 	[ALGO_ITC_YESPOWER_1_0_1]	= "YespowerItc",
 	[ALGO_MBC_YESPOWER_1_0_1]	= "YespowerMbc",
 	[ALGO_YTN_YESPOWER_1_0_1]	= "YespowerYtn",
+	[ALGO_ADVC_YESPOWER_1_0_1]	= "YespowerAdvc",
 };
 
 bool opt_debug = false;
@@ -141,7 +149,7 @@ static int opt_retries = -1;
 static int opt_fail_pause = 30;
 int opt_timeout = 0;
 static int opt_scantime = 5;
-static enum algos opt_algo = ALGO_SUGAR_YESPOWER_1_0_1;
+enum algos opt_algo = ALGO_SUGAR_YESPOWER_1_0_1;
 static int opt_n_threads;
 static int num_processors;
 static char *rpc_url;
@@ -1197,6 +1205,7 @@ static void *miner_thread(void *userdata)
 			      - time(NULL);
 		max64 *= thr_hashrates[thr_id];
 		if (max64 <= 0) {
+			max64 = 1499;
 			switch (opt_algo) {
 			case ALGO_SUGAR_YESPOWER_1_0_1:
 				max64 = 499;
@@ -1223,6 +1232,9 @@ static void *miner_thread(void *userdata)
 				max64 = 499;
 				break;
 			case ALGO_YTN_YESPOWER_1_0_1:
+				max64 = 499;
+				break;
+			case ALGO_ADVC_YESPOWER_1_0_1:
 				max64 = 499;
 				break;
 			}
@@ -1291,10 +1303,19 @@ static void *miner_thread(void *userdata)
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
+		case ALGO_ADVC_YESPOWER_1_0_1:
+			rc = scanhash_yespower(
+				thr_id, work.data, work.target, max_nonce, &hashes_done
+			);
+			break;
 
 		default:
+			rc = scanhash_yespower(
+				thr_id, work.data, work.target, max_nonce, &hashes_done
+			);
+			break;
 			/* should never happen */
-			goto out;
+			//goto out;
 		}
 
 		/* record scanhash elapsed time */
@@ -1932,6 +1953,8 @@ int main(int argc, char *argv[])
 
 	/* parse command line */
 	parse_cmdline(argc, argv);
+
+	setup_variant();
 
 	if (!opt_benchmark && !rpc_url) {
 		fprintf(stderr, "%s: no URL supplied\n", argv[0]);

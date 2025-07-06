@@ -136,6 +136,8 @@ void sha256_init(uint32_t *state);
 void sha256_transform(uint32_t *state, const uint32_t *block, int swap);
 void sha256d(unsigned char *hash, const unsigned char *data, int len);
 
+extern bool setup_variant();
+
 extern int scanhash_sugar_yespower(int thr_id, uint32_t *pdata,
 	const uint32_t *ptarget,
 	uint32_t max_nonce, unsigned long *hashes_done);
@@ -172,6 +174,10 @@ extern int scanhash_ytn_yespower(int thr_id, uint32_t *pdata,
 	const uint32_t *ptarget,
 	uint32_t max_nonce, unsigned long *hashes_done);
 
+extern int scanhash_yespower(int thr_id, uint32_t *pdata,
+	const uint32_t *ptarget,
+	uint32_t max_nonce, unsigned long *hashes_done);
+
 struct thr_info {
 	int		id;
 	pthread_t	pth;
@@ -183,6 +189,25 @@ struct work_restart {
 	char			padding[128 - sizeof(unsigned long)];
 };
 
+enum algos {
+	ALGO_YESCRYPT,
+	ALGO_YESCRYPT_R8,
+	ALGO_YESCRYPT_R16,
+	ALGO_YESCRYPT_R32,
+	ALGO_SUGAR_YESPOWER_1_0_1,
+	ALGO_ISO_YESPOWER_1_0_1,
+	ALGO_NULL_YESPOWER_1_0_1,
+	ALGO_URX_YESPOWER_1_0_1,
+	ALGO_LITB_YESPOWER_1_0_1,
+	ALGO_IOTS_YESPOWER_1_0_1,
+	ALGO_ITC_YESPOWER_1_0_1,
+	ALGO_MBC_YESPOWER_1_0_1,
+	ALGO_YTN_YESPOWER_1_0_1,
+	ALGO_ADVC_YESPOWER_1_0_1,
+};
+
+
+
 extern bool opt_debug;
 extern bool opt_protocol;
 extern bool opt_redirect;
@@ -193,6 +218,7 @@ extern bool have_gbt;
 extern bool allow_getwork;
 extern bool want_stratum;
 extern bool have_stratum;
+extern enum algos opt_algo;
 extern char *opt_cert;
 extern char *opt_proxy;
 extern long opt_proxy_type;
