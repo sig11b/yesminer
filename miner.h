@@ -194,19 +194,34 @@ enum algos {
 	ALGO_YESCRYPT_R8,
 	ALGO_YESCRYPT_R16,
 	ALGO_YESCRYPT_R32,
-	ALGO_SUGAR_YESPOWER_1_0_1,
-	ALGO_ISO_YESPOWER_1_0_1,
-	ALGO_NULL_YESPOWER_1_0_1,
-	ALGO_URX_YESPOWER_1_0_1,
-	ALGO_LITB_YESPOWER_1_0_1,
-	ALGO_IOTS_YESPOWER_1_0_1,
-	ALGO_ITC_YESPOWER_1_0_1,
-	ALGO_MBC_YESPOWER_1_0_1,
-	ALGO_YTN_YESPOWER_1_0_1,
-	ALGO_ADVC_YESPOWER_1_0_1,
+	ALGO_YESPOWER,
+	ALGO_YESPOWER_ADVC,
+	ALGO_YESPOWER_IOTS,
+	ALGO_YESPOWER_ISO,
+	ALGO_YESPOWER_ITC,
+	ALGO_YESPOWER_LITB,
+	ALGO_YESPOWER_POWER2B,
+	ALGO_YESPOWER_R16,
+	ALGO_YESPOWER_SUGAR,
+	ALGO_YESPOWER_URX,
 };
 
-
+static const char *algo_names[] = {
+	[ALGO_YESCRYPT]		= "yescrypt",
+	[ALGO_YESCRYPT_R8]	= "yescryptr8",
+	[ALGO_YESCRYPT_R16]	= "yescryptr16",
+	[ALGO_YESCRYPT_R32]	= "yescryptr32",
+	[ALGO_YESPOWER]		= "yespower",
+	[ALGO_YESPOWER_ADVC]	= "yespoweradvc",
+	[ALGO_YESPOWER_IOTS]	= "yespoweriots",
+	[ALGO_YESPOWER_ISO]	= "yespoweriso",
+	[ALGO_YESPOWER_ITC]	= "yespoweritc",
+	[ALGO_YESPOWER_LITB]	= "yespowerlitb",
+	[ALGO_YESPOWER_POWER2B]	= "power2b",
+	[ALGO_YESPOWER_R16]	= "yespowerr16",
+	[ALGO_YESPOWER_SUGAR]	= "yespowersugar",
+	[ALGO_YESPOWER_URX]	= "yespowerurx",
+};
 
 extern bool opt_debug;
 extern bool opt_protocol;

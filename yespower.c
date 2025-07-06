@@ -35,16 +35,12 @@
 #include <string.h>
 #include <inttypes.h>
 
-yespower_params_t params = {
-	.version = YESPOWER_1_0,
-	.N = 4096,
-	.r = 16,
-	.pers = NULL,
-	.perslen = 0
-};
+yespower_params_t params;
 
 bool setup_variant()
 {
+	// all variants have the same difficulty conversion
+	// factor of 65536. Hence, this is not set hete.
 	switch (opt_algo) {
 	case ALGO_YESCRYPT:
 		params.version = YESPOWER_0_5;
@@ -56,31 +52,31 @@ bool setup_variant()
 		params.version = YESPOWER_0_5;
 		params.N = 2048;
 		params.r = 8;
-		params.pers = "Client Key";
+		params.pers = (const uint8_t*) "Client Key";
 		break;
 	case ALGO_YESCRYPT_R16:
 		params.version = YESPOWER_0_5;
 		params.N = 4096;
 		params.r = 16;
-		params.pers = "Client Key";
+		params.pers = (const uint8_t*) "Client Key";
 		break;
 	case ALGO_YESCRYPT_R32:
 		params.version = YESPOWER_0_5;
 		params.N = 4096;
 		params.r = 32;
-		params.pers = "WaviBanana";
+		params.pers = (const uint8_t*) "WaviBanana";
 		break;
-	case ALGO_ADVC_YESPOWER_1_0_1:
+	case ALGO_YESPOWER_ADVC:
 		params.version = YESPOWER_1_0;
 		params.N = 2048;
 		params.r = 32;
-		params.pers = "Let the quest begin";
+		params.pers = (const uint8_t*) "Let the quest begin";
 		break;
 	};
 	if (params.pers == NULL) {
 		params.perslen = 0;
 	} else {
-		params.perslen = strlen(params.pers);;
+		params.perslen = strlen((char*)params.pers);
 	}
 	return true;
 }

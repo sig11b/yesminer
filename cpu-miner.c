@@ -100,38 +100,6 @@ struct workio_cmd {
 	} u;
 };
 
-/*
-enum algos {
-	ALGO_SUGAR_YESPOWER_1_0_1,
-	ALGO_ISO_YESPOWER_1_0_1,
-	ALGO_NULL_YESPOWER_1_0_1,
-	ALGO_URX_YESPOWER_1_0_1,
-	ALGO_LITB_YESPOWER_1_0_1,
-	ALGO_IOTS_YESPOWER_1_0_1,
-	ALGO_ITC_YESPOWER_1_0_1,
-	ALGO_MBC_YESPOWER_1_0_1,
-	ALGO_YTN_YESPOWER_1_0_1,
-	ALGO_ADVC_YESPOWER_1_0_1,
-};
-*/
-
-static const char *algo_names[] = {
-	[ALGO_YESCRYPT]		= "yescrypt",
-	[ALGO_YESCRYPT_R8]	= "yescryptr8",
-	[ALGO_YESCRYPT_R16]	= "yescryptr16",
-	[ALGO_YESCRYPT_R32]	= "yescryptr32",
-	[ALGO_SUGAR_YESPOWER_1_0_1]	= "YespowerSugar",
-	[ALGO_ISO_YESPOWER_1_0_1]	= "YespowerIso",
-	[ALGO_NULL_YESPOWER_1_0_1]	= "YespowerNull",
-	[ALGO_URX_YESPOWER_1_0_1]	= "YespowerUrx",
-	[ALGO_LITB_YESPOWER_1_0_1]	= "YespowerLitb",
-	[ALGO_IOTS_YESPOWER_1_0_1]	= "YespowerIots",
-	[ALGO_ITC_YESPOWER_1_0_1]	= "YespowerItc",
-	[ALGO_MBC_YESPOWER_1_0_1]	= "YespowerMbc",
-	[ALGO_YTN_YESPOWER_1_0_1]	= "YespowerYtn",
-	[ALGO_ADVC_YESPOWER_1_0_1]	= "YespowerAdvc",
-};
-
 bool opt_debug = false;
 bool opt_protocol = false;
 static bool opt_benchmark = false;
@@ -149,7 +117,7 @@ static int opt_retries = -1;
 static int opt_fail_pause = 30;
 int opt_timeout = 0;
 static int opt_scantime = 5;
-enum algos opt_algo = ALGO_SUGAR_YESPOWER_1_0_1;
+enum algos opt_algo = ALGO_YESPOWER_SUGAR;
 static int opt_n_threads;
 static int num_processors;
 static char *rpc_url;
@@ -190,15 +158,21 @@ static char const usage[] = "\
 Usage: " PROGRAM_NAME " [OPTIONS]\n\
 Options:\n\
   -a, --algo=ALGO       specify the algorithm to use\n\
-                          YespowerSugar: Sugarchain (default)\n\
-                          YespowerIso:   IsotopeC\n\
-                          YespowerNull:  CranePay, Bellcoin, Veco, SwampCoin\n\
-                          YespowerUrx:   UraniumX\n\
-                          YespowerLitb:  LightBit\n\
+                          Power2b:       MicroBitcoin\n\
+                          Yescrypt:      GlobalBoost-Y, Myriad, Unitus\n\
+                          YescryptR8:    Mateable, BitZeny\n\
+                          YescryptR16:   Fennec, GoldCash, ELI\n\
+                          YescryptR32:   DMS, WAVI\n\
+                          Yespower:      CranePay, Bellcoin, Veco, SwampCoin\n\
+                          YespowerAdvc:  AdventureCoin\n\
                           YespowerIots:  IOTS\n\
+                          YespowerIso:   IsotopeC\n\
                           YespowerItc:   Intercoin\n\
-                          YespowerMbc:   power2b for MicroBitcoin\n\
-                          YespowerYtn:   Yenten (N4096, r16, NULL)\n\
+                          YespowerLitb:  LightBit\n\
+                          YespowerR16:   Yentenn\
+                          YespowerSugar: Sugarchain (default)\n\
+                          YespowerUrx:   UraniumX\n\
+                        ALGO is case insensitive\n\
   -o, --url=URL         URL of mining server\n\
   -O, --userpass=U:P    username:password pair for mining server\n\
   -u, --user=USERNAME   username for mining server\n\
@@ -1124,6 +1098,7 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 		free(xnonce2str);
 	}
 
+	// all yescrypt and yespower variants have the same factor of 65536
 	diff_to_target(work->target, sctx->job.diff / 65536.0);
 }
 
@@ -1205,36 +1180,23 @@ static void *miner_thread(void *userdata)
 			      - time(NULL);
 		max64 *= thr_hashrates[thr_id];
 		if (max64 <= 0) {
-			max64 = 1499;
 			switch (opt_algo) {
-			case ALGO_SUGAR_YESPOWER_1_0_1:
-				max64 = 499;
+			case ALGO_YESCRYPT:
+			case ALGO_YESCRYPT_R8:
+				max64 = 1499;
 				break;
-			case ALGO_ISO_YESPOWER_1_0_1:
-				max64 = 499;
-				break;
-			case ALGO_NULL_YESPOWER_1_0_1:
-				max64 = 499;
-				break;
-			case ALGO_URX_YESPOWER_1_0_1:
-				max64 = 499;
-				break;
-			case ALGO_LITB_YESPOWER_1_0_1:
-				max64 = 499;
-				break;
-			case ALGO_IOTS_YESPOWER_1_0_1:
-				max64 = 499;
-				break;
-			case ALGO_ITC_YESPOWER_1_0_1:
-				max64 = 499;
-				break;
-			case ALGO_MBC_YESPOWER_1_0_1:
-				max64 = 499;
-				break;
-			case ALGO_YTN_YESPOWER_1_0_1:
-				max64 = 499;
-				break;
-			case ALGO_ADVC_YESPOWER_1_0_1:
+			case ALGO_YESCRYPT_R16:
+			case ALGO_YESCRYPT_R32:
+			case ALGO_YESPOWER:
+			case ALGO_YESPOWER_ADVC:
+			case ALGO_YESPOWER_IOTS:
+			case ALGO_YESPOWER_ISO:
+			case ALGO_YESPOWER_ITC:
+			case ALGO_YESPOWER_LITB:
+			case ALGO_YESPOWER_POWER2B:
+			case ALGO_YESPOWER_R16:
+			case ALGO_YESPOWER_SUGAR:
+			case ALGO_YESPOWER_URX:
 				max64 = 499;
 				break;
 			}
@@ -1250,60 +1212,60 @@ static void *miner_thread(void *userdata)
 		/* scan nonces for a proof-of-work hash */
 		switch (opt_algo) {
 
-		case ALGO_SUGAR_YESPOWER_1_0_1:
+		case ALGO_YESPOWER_SUGAR:
 			rc = scanhash_sugar_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
 
-		case ALGO_ISO_YESPOWER_1_0_1:
+		case ALGO_YESPOWER_ISO:
 			rc = scanhash_iso_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
 
-		case ALGO_NULL_YESPOWER_1_0_1:
+		case ALGO_YESPOWER:
 			rc = scanhash_null_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
 
-		case ALGO_URX_YESPOWER_1_0_1:
+		case ALGO_YESPOWER_URX:
 			rc = scanhash_urx_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
 
-		case ALGO_LITB_YESPOWER_1_0_1:
+		case ALGO_YESPOWER_LITB:
 			rc = scanhash_litb_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
 
-		case ALGO_IOTS_YESPOWER_1_0_1:
+		case ALGO_YESPOWER_IOTS:
 			rc = scanhash_iots_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
 
-		case ALGO_ITC_YESPOWER_1_0_1:
+		case ALGO_YESPOWER_ITC:
 			rc = scanhash_itc_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
 
-		case ALGO_MBC_YESPOWER_1_0_1:
+		case ALGO_YESPOWER_POWER2B:
 			rc = scanhash_mbc_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
 
-		case ALGO_YTN_YESPOWER_1_0_1:
+		case ALGO_YESPOWER_R16:
 			rc = scanhash_ytn_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
 			break;
-		case ALGO_ADVC_YESPOWER_1_0_1:
+		case ALGO_YESPOWER_ADVC:
 			rc = scanhash_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done
 			);
@@ -1622,7 +1584,7 @@ static void parse_arg(int key, char *arg, char *pname)
 	case 'a':
 		for (i = 0; i < ARRAY_SIZE(algo_names); i++) {
 			v = strlen(algo_names[i]);
-			if (!strncmp(arg, algo_names[i], v)) {
+			if (!strncasecmp(arg, algo_names[i], v)) {
 				if (arg[v] == '\0') {
 					opt_algo = i;
 					break;
