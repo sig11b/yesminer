@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 ArtForz, 2011-2014 pooler, 2018 The Resistance developers, 2020 The Sugarchain Yumekawa developers
+ * Copyright 2011 ArtForz, 2011-2014 pooler, 2018 The Resistance developers, 2020 The Sugarchain Yumekawa developers, 2025 Sig11
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -162,6 +162,12 @@ bool setup_variant()
 		params.r = 32;
 		params.pers = (const uint8_t*) "UraniumX";
 		break;
+	case ALGO_NONE:
+		fprintf( stderr, "Something went wrong.\n" );
+		exit(1);
+	default:
+		fprintf( stderr, "Unimplemented algo encountered.\n" );
+		exit(1);
 	};
 	if (params.pers == NULL) {
 		params.perslen = 0;

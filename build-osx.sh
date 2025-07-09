@@ -1,6 +1,9 @@
 # try on virtualbox ubuntu 16.04
 # https://gist.github.com/quagliero/90f493f123c7b1ddba5428ba0146329a
 
+echo "only build.sh supported at the moment"
+exit
+
 # CLEAN
 make distclean || echo clean
 rm -f config.status

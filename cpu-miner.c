@@ -38,7 +38,6 @@
 #include "compat.h"
 #include "miner.h"
 
-#define PROGRAM_NAME		"sugarmaker"
 #define LP_SCANTIME		60
 
 #ifdef __linux /* Linux specific policy and affinity management */
@@ -117,7 +116,7 @@ static int opt_retries = -1;
 static int opt_fail_pause = 30;
 int opt_timeout = 0;
 static int opt_scantime = 5;
-enum algos opt_algo = ALGO_YESPOWER_SUGAR;
+enum algos opt_algo = ALGO_NONE;
 static int opt_n_threads;
 static int num_processors;
 static char *rpc_url;
@@ -154,31 +153,13 @@ struct option {
 };
 #endif
 
-static char const usage[] = "\
-Usage: " PROGRAM_NAME " [OPTIONS]\n\
+static char const usage_top[] = "\
+Usage: " PACKAGE_NAME " [OPTIONS]\n\
 Options:\n\
   -a, --algo=ALGO       specify the algorithm to use (case insensitive)\n\
-                          CPUpower:      CPUchain\n\
-                          Power2b:       MicroBitcoin\n\
-                          Yescrypt:      GlobalBoost-Y, Myriad, Unitus\n\
-                          YescryptR8:    Mateable, BitZeny\n\
-                          YescryptR16:   Fennec, GoldCash, ELI\n\
-                          YescryptR32:   DMS, WAVI\n\
-                          Yespower:      Bellcoin, Veco, SwampCoin\n\
-                          YespowerAdvc:  AdventureCoin\n\
-                          YespowerEqpay: EQPAY\n\
-                          YespowerLtncg: CrionicCoin, LTNCG\n\
-                          YespowerMgpc:  MagpieCoin\n\
-                          YespowerR16:   Yenten\n\
-                          YespowerSugar: Sugarchain (default)\n\
-                          YespowerUrx:   UraniumX\n\
-                          YespowerTide:  TideCoin\n\
-                        Historic algorithms:\n\
-                          YespowerArwn:  ARWN\n\
-                          YespowerIots:  IOTS\n\
-                          YespowerIso:   IsotopeC\n\
-                          YespowerItc:   Intercoin\n\
-                          YespowerLitb:  LightBit\n\
+";
+
+static char const usage_bottom[] = "\
   -o, --url=URL         URL of mining server\n\
   -O, --userpass=U:P    username:password pair for mining server\n\
   -u, --user=USERNAME   username for mining server\n\
@@ -1189,6 +1170,7 @@ static void *miner_thread(void *userdata)
 			switch (opt_algo) {
 			case ALGO_YESCRYPT:
 			case ALGO_YESCRYPT_R8:
+			case ALGO_YESPOWER_TIDE:
 				max64 = 1499;
 				break;
 			case ALGO_YESCRYPT_R16:
@@ -1207,7 +1189,6 @@ static void *miner_thread(void *userdata)
 			case ALGO_YESPOWER_POWER2B:
 			case ALGO_YESPOWER_R16:
 			case ALGO_YESPOWER_SUGAR:
-			case ALGO_YESPOWER_TIDE:
 			case ALGO_YESPOWER_URX:
 				max64 = 499;
 				break;
@@ -1583,9 +1564,19 @@ static void show_version_and_exit(void)
 static void show_usage_and_exit(int status)
 {
 	if (status)
-		fprintf(stderr, "Try `" PROGRAM_NAME " --help' for more information.\n");
-	else
-		printf(usage);
+		// do I want to implement passing of pname?
+		//fprintf(stderr, "Try '%s --help' for more information.\n",pname);
+		fprintf(stderr, "Try '" PACKAGE_NAME " --help' for more information.\n");
+	else {
+		printf(usage_top);
+		for (int i = 0; i < ARRAY_SIZE(algo_names); i++) {
+			if (i == ALGO_NONE)
+				printf("           Historic algorithms:\n");
+			else
+				printf("             %s\n",algo_names[i]);
+		}
+		printf(usage_bottom);
+	}
 	exit(status);
 }
 
@@ -1605,7 +1596,8 @@ static void parse_arg(int key, char *arg, char *pname)
 	switch(key) {
 	case 'a':
 		for (i = 0; i < ARRAY_SIZE(algo_names); i++) {
-			v = strlen(algo_names[i]);
+			//v = strlen(algo_names[i]);
+			v = strcspn(algo_names[i]," ");
 			if (!strncasecmp(arg, algo_names[i], v)) {
 				if (arg[v] == '\0') {
 					opt_algo = i;
@@ -1613,7 +1605,7 @@ static void parse_arg(int key, char *arg, char *pname)
 				}
 			}
 		}
-		if (i == ARRAY_SIZE(algo_names)) {
+		if (i == ARRAY_SIZE(algo_names) || i == ALGO_NONE) {
 			fprintf(stderr, "%s: unknown algorithm -- '%s'\n",
 				pname, arg);
 			show_usage_and_exit(1);
@@ -1900,27 +1892,15 @@ static void signal_handler(int sig)
 
 static void show_credits() {
 	printf("\n");
-	printf("     *** "PACKAGE_NAME" "PACKAGE_VERSION" by Kanon ***\n");
-	printf("     Multi-threaded CPU miner for Sugarchain and other Yespower variants\n");
+	printf("     *** "PACKAGE_NAME" "PACKAGE_VERSION" ***\n");
+	printf("     Multi-threaded CPU miner for Yescrypt and Yespower variants\n");
 	printf("\n");
 	printf("     Authors:\n");
 	printf("     Jeff Garzik\n");
 	printf("     Pooler\n");
 	printf("     Alexander Peslyak\n");
 	printf("     Kanon\n");
-	printf("\n");
-	printf("     Donation to Kanon:\n");
-	printf("     Your support is very helpful to develop better software:)\n");
-	printf("\n");
-	printf("     BTC    1JojGCHLpEVMv6Z28y9gN6jUXtGF2ioEUV\n");
-	printf("     BTC    bc1qqe30mhqdkjfszzc4pex5udvay2ay6w0htgwtax (bech32)\n");
-	printf("     SUGAR  sugar1qv0ahzfa2ssu47wes89390sl0jz6g05h0267u8g\n");
-	printf("\n");
-	printf("     Download Latest Release:\n");
-	printf("     https://github.com/decryp2kanon/sugarmaker/releases/latest\n");
-	printf("\n");
-	printf("     Bug Report or Question (English, Chinese, Japanese, Korean):\n");
-	printf("     https://github.com/decryp2kanon/sugarmaker/issues\n");
+	printf("     Sig11\n");
 	printf("\n");
 }
 
@@ -1938,6 +1918,10 @@ int main(int argc, char *argv[])
 	/* parse command line */
 	parse_cmdline(argc, argv);
 
+	if (opt_algo == ALGO_NONE) {
+		fprintf( stderr, "%s: No algo parameter specified\n", argv[0] );
+                show_usage_and_exit(1);
+	}
 	setup_variant();
 
 	if (!opt_benchmark && !rpc_url) {
@@ -2091,8 +2075,9 @@ int main(int argc, char *argv[])
 	}
 
 	applog(LOG_INFO, "%d miner threads started, "
-		"using '%s' algorithm.",
+		"using '%.*s' algorithm.",
 		opt_n_threads,
+		strcspn(algo_names[opt_algo]," "), // or maybe using strtok()?
 		algo_names[opt_algo]);
 
 	/* main loop - simply wait for workio thread to exit */

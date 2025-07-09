@@ -6,7 +6,7 @@ rm -f config.status
 ./autogen.sh
 ./configure CFLAGS="-Wall -O2 -fomit-frame-pointer"
 make -j$(nproc)
-strip -s sugarmaker
+#strip -s sugarmaker
 
 # CHECK STATIC
-file sugarmaker | grep "dynamically linked"
+#file sugarmaker | grep "dynamically linked"

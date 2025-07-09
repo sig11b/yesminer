@@ -1,6 +1,9 @@
 # try on virtualbox ubuntu 16.04
 # https://lxadm.com/Static_compilation_of_cpuminer
 
+echo "only build.sh supported at the moment."
+exit
+
 # CLEAN
 make distclean || echo clean
 rm -f config.status

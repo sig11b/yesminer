@@ -1,4 +1,4 @@
-AC_INIT([sugarmaker], [2.5.0-sugar4])
+AC_INIT([yesminer], [2.6.0])
 
 AC_PREREQ([2.59c])
 AC_CANONICAL_SYSTEM

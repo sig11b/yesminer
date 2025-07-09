@@ -1,4 +1,7 @@
 # CLEAN
+
+echo "only build.sh supported at the moment"
+exit
 make distclean || echo clean
 rm -f config.status
 
