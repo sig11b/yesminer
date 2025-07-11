@@ -6,7 +6,7 @@ else
 JANSSON_INCLUDES=
 endif
 
-EXTRA_DIST	= example-cfg.json makefile.in
+EXTRA_DIST	= example-cfg.json manpage.in
 
 SUBDIRS		= compat
 
@@ -29,11 +29,11 @@ yesminer_LDADD		= @LIBCURL@ @JANSSON_LIBS@ @PTHREAD_LIBS@ @WS2_LIBS@
 yesminer_CPPFLAGS	= $(PTHREAD_FLAGS) @CPPFLAGS@ $(JANSSON_INCLUDES)
 
 #
-%.1: manpage.in miner.h
+%.1: manpage.in miner.h AUTHORS
 	-sed -e "s,\@VERSION\@,$(VERSION),g" \
 	-e "s,\@PACKAGE_NAME\@,$(PACKAGE_NAME)," \
 	-e "s,\@PACKAGE_NAME_UPPER\@,`echo $(PACKAGE_NAME) |tr [:lower:] [:upper:]`," \
-	-e "s,\@DATE\@,`date -r $? +%F`," \
+	-e "s,\@DATE\@,`date -r manpage.in +%F`," \
 	-e '/.RS 11/q' manpage.in > $@
 	-grep '\[ALGO' miner.h | sed '/NONE/q' | grep -v NONE | sed -e s/'.*= *"'// -e s/'".*'// | sort >> $@
 	-echo '.RE' >> $@ ; echo '.RS' >> $@ ; echo 'Historic algorithms:' >> $@ ; echo '.RE' >> $@ ; echo '.RS 11' >> $@ ;

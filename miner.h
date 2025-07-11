@@ -213,15 +213,16 @@ enum algos {
 	ALGO_YESPOWER_ISO,
 	ALGO_YESPOWER_ITC,
 	ALGO_YESPOWER_LITB,
+	ALGO_YESPOWER_RES,
 };
 
 static const char *algo_names[] = {
-	[ALGO_YESCRYPT]		= "yescrypt         GlobalBost-Y, Myrias, Unitus",
+	[ALGO_YESCRYPT]		= "yescrypt         GlobalBost-Y, Myriad, Unitus",
 	[ALGO_YESCRYPT_R8]	= "yescryptR8       Mateable, BitZeny",
 	[ALGO_YESCRYPT_R16]	= "yescryptR16      Fennec, GoldCash, ELI",
 	[ALGO_YESCRYPT_R32]	= "yescryptR32      DMS, WAVI",
 	[ALGO_YESPOWER]		= "yespower         BellCoin, Veco, SwampCoin",
-	[ALGO_YESPOWER_ADVC]	= "yespowerADVC     Adventure Coin",
+	[ALGO_YESPOWER_ADVC]	= "yespowerADVC     AdventureCoin",
 	[ALGO_YESPOWER_CPU]	= "cpupower         CPUchain",
 	[ALGO_YESPOWER_EQPAY]	= "yespowerEQPAY    EQPAY",
 	[ALGO_YESPOWER_LTNCG]	= "yespowerLTNCG    CrionicCoin, LTNCG",
@@ -229,7 +230,7 @@ static const char *algo_names[] = {
 	[ALGO_YESPOWER_POWER2B]	= "power2b          MircoBitcoin",
 	[ALGO_YESPOWER_R16]	= "yespowerR16      Yenten",
 	[ALGO_YESPOWER_SUGAR]	= "yespowerSUGAR    SugarChain",
-	[ALGO_YESPOWER_TIDE]	= "yespowerTIDE     TideCOin",
+	[ALGO_YESPOWER_TIDE]	= "yespowerTIDE     TideCoin",
 	[ALGO_YESPOWER_URX]	= "yespowerURX      UraniumX",
 	[ALGO_NONE]		= "\0",
 	[ALGO_YESPOWER_ARWN]	= "yespowerARWN     ArowanaCoin",
@@ -237,6 +238,7 @@ static const char *algo_names[] = {
 	[ALGO_YESPOWER_ISO]	= "yespowerISO      IsotopeC",
 	[ALGO_YESPOWER_ITC]	= "yespowerITC      Intercoin",
 	[ALGO_YESPOWER_LITB]	= "yespowerLITB     LightBit",
+	[ALGO_YESPOWER_RES]	= "yespowerRES      Resistance",
 };
 
 extern bool opt_debug;

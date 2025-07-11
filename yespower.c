@@ -144,6 +144,12 @@ bool setup_variant()
 		params.r = 16;
 		params.pers = NULL;
 		break;
+	case ALGO_YESPOWER_RES:
+		params.version = YESPOWER_1_0;
+		params.N = 4096;
+		params.r = 32;
+		params.pers = NULL;
+		break;
 	case ALGO_YESPOWER_SUGAR:
 		params.version = YESPOWER_1_0;
 		params.N = 2048;

@@ -1188,8 +1188,10 @@ static void *miner_thread(void *userdata)
 			case ALGO_YESPOWER_MGPC:
 			case ALGO_YESPOWER_POWER2B:
 			case ALGO_YESPOWER_R16:
+			case ALGO_YESPOWER_RES:
 			case ALGO_YESPOWER_SUGAR:
 			case ALGO_YESPOWER_URX:
+			default:
 				max64 = 499;
 				break;
 			}
@@ -1203,77 +1205,7 @@ static void *miner_thread(void *userdata)
 		gettimeofday(&tv_start, NULL);
 
 		/* scan nonces for a proof-of-work hash */
-/*
-		switch (opt_algo) {
 
-		case ALGO_YESPOWER_SUGAR:
-			rc = scanhash_sugar_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-
-		case ALGO_YESPOWER_ISO:
-			rc = scanhash_iso_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-
-		case ALGO_YESPOWER:
-			rc = scanhash_null_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-
-		case ALGO_YESPOWER_URX:
-			rc = scanhash_urx_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-
-		case ALGO_YESPOWER_LITB:
-			rc = scanhash_litb_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-
-		case ALGO_YESPOWER_IOTS:
-			rc = scanhash_iots_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-
-		case ALGO_YESPOWER_ITC:
-			rc = scanhash_itc_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-
-		case ALGO_YESPOWER_POWER2B:
-			rc = scanhash_mbc_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-
-		case ALGO_YESPOWER_R16:
-			rc = scanhash_ytn_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-		case ALGO_YESPOWER_ADVC:
-			rc = scanhash_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-
-		default:
-			rc = scanhash_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-			break;
-			// should never happen 
-			//goto out;
-		}
-*/
 		if (opt_algo == ALGO_YESPOWER_POWER2B)
 			rc = scanhash_mbc_yespower(
 				thr_id, work.data, work.target, max_nonce, &hashes_done

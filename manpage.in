@@ -1,4 +1,4 @@
-.TH @PACKAGE_NAME_UPPER@ 1 "@DATE@" "@PACKAGE_NAME@-@VERSION@" ""
+.TH @PACKAGE_NAME_UPPER@ 1 "@DATE@" "@PACKAGE_NAME@-@VERSION@"
 .SH NAME
 @PACKAGE_NAME@ \- CPU miner for Yescrypt and Yespower cryptocurrencies
 .SH SYNOPSIS
@@ -37,7 +37,7 @@ if the number of threads is a multiple of the number of processors.
 \fB\-a\fR, \fB\-\-algo\fR=\fIALGORITHM\fR
 Set the hashing algorithm to use.
 ALGORITHM is case insensitive.
-Possible values (with arbitrary capitalizations) are:
+Possible values (using arbitrary capitalizations as examples) are:
 .nf
 .RS 11
 .RE
@@ -72,7 +72,8 @@ Sample configuration file:
 
 .nf
 	{
-		"url": "stratum+tcp://1pool.sugarchain.org:3333",
+		"algo": "yespowerR16",
+		"url": "stratum+tcp://pool.example.com:3333",
 		"userpass": "foo:bar",
 		"retry-pause": "10",
 		"quiet": true
@@ -165,32 +166,33 @@ Since libcurl 7.18.0, the following are also supported:
 \fBsocks4a\fR, \fBsocks5h\fR (SOCKS5 with remote name resolving).
 If no scheme is specified, the proxy is treated as an HTTP proxy.
 .SH EXAMPLES
-To connect to a mining pool that provides a Stratum server
-at example.com on port 3333, authenticating as worker "foo" with password "bar":
+To connect to a SugarChain mining pool that provides a Stratum server at
+example.com on port 3333, authenticating as worker "foo" with password "bar":
 .PP
 .nf
 .RS
-@PACKAGE_NAME@ \-o stratum+tcp://example.com:3333 \-O foo:bar
+@PACKAGE_NAME@ \-a yespowerSugar \-u foo \-p bar \\
+	\-o stratum+tcp://example.com:3333
 .RE
 .fi
 .PP
-To mine to a local testnet instance running on port 44229,
-authenticating with username "rpcuser" and password "rpcpass":
+To mine to a local testnet instance of a yespower currency running on port
+4422, authenticating with username "rpcusr" and password "rpcpass":
 .PP
 .nf
 .RS
-@PACKAGE_NAME@ \-o http://127.0.0.1:44229 \-O rpcuser:rpcpass \\
+@PACKAGE_NAME@ \-a yespower \-O rpcusr:rpcpass \-o http://127.0.0.1:4422 \\
 	\-\-coinbase\-addr=abcdefghijklmnopqrstuvwxyz123456789
 .RE
 .fi
 .PP
-To connect to a P2Pool node running on my.server on port 9327,
-mining in the background and having output sent to the syslog facility,
-omitting the per-thread hashmeter output:
+To connect to a P2Pool node of a yescryptR16 currency running on my.server on
+port 9327, mining in the background and having output sent to the syslog
+facility, omitting the per-thread hashmeter output:
 .PP
 .nf
 .RS
-@PACKAGE_NAME@ \-BSq \-o http://my.server:9327
+@PACKAGE_NAME@ \-a yescryptr16 \-BSq \-o http://my.server:9327
 .RE
 .fi
 .SH ENVIRONMENT
@@ -215,5 +217,6 @@ using the \fB\-x\fR option.
 .SH AUTHOR
 This variant is maintained by sig11b@github.
 
-Most of the code in the current version of @PACKAGE_NAME@ is based on cpuminer
-by Pooler. Most major contributors are:
+Most of the code in the current version of @PACKAGE_NAME@ is based on
+sugarmaker by Kanon, which, in turn, is based on cpuminer by Pooler.
+Most major contributors are:
