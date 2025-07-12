@@ -43,10 +43,12 @@ bool setup_variant()
 	// factor of 65536. Hence, this is not set hete.
 	switch (opt_algo) {
 	case ALGO_YESCRYPT:
+		// yescrypt has a variable pers created from the data
+		// see also scanhash_yespower() below
 		params.version = YESPOWER_0_5;
 		params.N = 2048;
 		params.r = 8;
-		params.pers = NULL;
+		params.pers = (const uint8_t*) "this will be overwritten in scanhash_yespower()";
 		break;
 	case ALGO_YESCRYPT_R8:
 		params.version = YESPOWER_0_5;
@@ -204,6 +206,13 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 
 	do {
 		be32enc(&data.u32[19], ++n);
+
+		if (opt_algo == ALGO_YESCRYPT) {
+		// a specialty of the coins that call their algo scrypt
+			params.pers = (const uint8_t*) data.u8;
+			//params.pers = data.u8;
+			params.perslen = 80;
+		}
 
 		if (yespower_tls(data.u8, 80, &params, &hash.yb))
 			abort();

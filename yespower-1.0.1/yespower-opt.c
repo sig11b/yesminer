@@ -1100,11 +1100,8 @@ int yespower(yespower_local_t *local,
 		if (pers) {
 			HMAC_SHA256_Buf(dst, sizeof(*dst), pers, perslen,
 			    sha256);
-		} else {
-			HMAC_SHA256_Buf(dst, sizeof(*dst), src, srclen,
-			    sha256);
+			SHA256_Buf(sha256, sizeof(sha256), (uint8_t *)dst);
 		}
-		SHA256_Buf(sha256, sizeof(sha256), (uint8_t *)dst);
 	} else {
 		ctx.S2 = S + 2 * Swidth_to_Sbytes1(Swidth);
 		ctx.w = 0;
