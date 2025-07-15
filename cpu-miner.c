@@ -1167,34 +1167,15 @@ static void *miner_thread(void *userdata)
 			      - time(NULL);
 		max64 *= thr_hashrates[thr_id];
 		if (max64 <= 0) {
-			switch (opt_algo) {
-			case ALGO_YESCRYPT:
-			case ALGO_YESCRYPT_R8:
-			case ALGO_YESPOWER_TIDE:
+			// The fastest algos get a larger value. It would even be more
+			// sensible to test for params.r == 8. However, in the end,
+			// this is not important at all.
+			if (opt_algo == ALGO_YESCRYPT ||
+			    opt_algo == ALGO_YESCRYPT_R8 ||
+			    opt_algo == ALGO_YESPOWER_TIDE)
 				max64 = 1499;
-				break;
-			case ALGO_YESCRYPT_R16:
-			case ALGO_YESCRYPT_R32:
-			case ALGO_YESPOWER:
-			case ALGO_YESPOWER_ADVC:
-			case ALGO_YESPOWER_ARWN:
-			case ALGO_YESPOWER_CPU:
-			case ALGO_YESPOWER_EQPAY:
-			case ALGO_YESPOWER_IOTS:
-			case ALGO_YESPOWER_ISO:
-			case ALGO_YESPOWER_ITC:
-			case ALGO_YESPOWER_LITB:
-			case ALGO_YESPOWER_LTNCG:
-			case ALGO_YESPOWER_MGPC:
-			case ALGO_YESPOWER_POWER2B:
-			case ALGO_YESPOWER_R16:
-			case ALGO_YESPOWER_RES:
-			case ALGO_YESPOWER_SUGAR:
-			case ALGO_YESPOWER_URX:
-			default:
+			else
 				max64 = 499;
-				break;
-			}
 		}
 		if (work.data[19] + max64 > end_nonce)
 			max_nonce = end_nonce;
@@ -1206,14 +1187,16 @@ static void *miner_thread(void *userdata)
 
 		/* scan nonces for a proof-of-work hash */
 
-		if (opt_algo == ALGO_YESPOWER_POWER2B)
-			rc = scanhash_mbc_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
-		else
-			rc = scanhash_yespower(
-				thr_id, work.data, work.target, max_nonce, &hashes_done
-			);
+		/*
+		 * this would be the place to branch along the lines:
+		 *   if (opt_algo == ALGO_YESPOWER_)
+		 *   else
+		 * or
+		 *   switch (opt_algo)
+		 * in case different scanhash_XYZ() functions are needed.
+		 */
+
+		rc = scanhash_yespower(thr_id, work.data, work.target, max_nonce, &hashes_done);
 
 		/* record scanhash elapsed time */
 		gettimeofday(&tv_end, NULL);

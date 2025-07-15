@@ -138,42 +138,6 @@ void sha256d(unsigned char *hash, const unsigned char *data, int len);
 
 extern bool setup_variant();
 
-extern int scanhash_sugar_yespower(int thr_id, uint32_t *pdata,
-	const uint32_t *ptarget,
-	uint32_t max_nonce, unsigned long *hashes_done);
-
-extern int scanhash_iso_yespower(int thr_id, uint32_t *pdata,
-	const uint32_t *ptarget,
-	uint32_t max_nonce, unsigned long *hashes_done);
-
-extern int scanhash_null_yespower(int thr_id, uint32_t *pdata,
-	const uint32_t *ptarget,
-	uint32_t max_nonce, unsigned long *hashes_done);
-
-extern int scanhash_urx_yespower(int thr_id, uint32_t *pdata,
-	const uint32_t *ptarget,
-	uint32_t max_nonce, unsigned long *hashes_done);
-
-extern int scanhash_litb_yespower(int thr_id, uint32_t *pdata,
-	const uint32_t *ptarget,
-	uint32_t max_nonce, unsigned long *hashes_done);
-
-extern int scanhash_iots_yespower(int thr_id, uint32_t *pdata,
-	const uint32_t *ptarget,
-	uint32_t max_nonce, unsigned long *hashes_done);
-
-extern int scanhash_itc_yespower(int thr_id, uint32_t *pdata,
-	const uint32_t *ptarget,
-	uint32_t max_nonce, unsigned long *hashes_done);
-
-extern int scanhash_mbc_yespower(int thr_id, uint32_t *pdata,
-	const uint32_t *ptarget,
-	uint32_t max_nonce, unsigned long *hashes_done);
-
-extern int scanhash_ytn_yespower(int thr_id, uint32_t *pdata,
-	const uint32_t *ptarget,
-	uint32_t max_nonce, unsigned long *hashes_done);
-
 extern int scanhash_yespower(int thr_id, uint32_t *pdata,
 	const uint32_t *ptarget,
 	uint32_t max_nonce, unsigned long *hashes_done);
@@ -199,6 +163,7 @@ enum algos {
 	ALGO_YESCRYPT_R32,
 	ALGO_YESPOWER,
 	ALGO_YESPOWER_ADVC,
+	ALGO_YESPOWER_BLAKE256, // For Dogemone, probably already dead, uses Cryptonight stratum
 	ALGO_YESPOWER_EQPAY,
 	ALGO_YESPOWER_LTNCG,
 	ALGO_YESPOWER_MGPC,
@@ -208,7 +173,6 @@ enum algos {
 	ALGO_YESPOWER_URX,
 	ALGO_NONE,              // ALGO_NONE separates the historic algos from the ones still in use
 	ALGO_YESPOWER_ARWN,
-//	ALGO_YESPOWER_DOGEMONE, // Probably already dead.
 	ALGO_YESPOWER_IOTS,
 	ALGO_YESPOWER_ISO,
 	ALGO_YESPOWER_ITC,
@@ -224,6 +188,7 @@ static const char *algo_names[] = {
 	[ALGO_YESPOWER]		= "yespower         BellCoin, Veco, SwampCoin",
 	[ALGO_YESPOWER_ADVC]	= "yespowerADVC     AdventureCoin",
 	[ALGO_YESPOWER_CPU]	= "cpupower         CPUchain",
+	[ALGO_YESPOWER_BLAKE256]= "yespowerBlake256 untested, Dogemone (DME)\n                                stratum of DME pools is incompatible",
 	[ALGO_YESPOWER_EQPAY]	= "yespowerEQPAY    EQPAY",
 	[ALGO_YESPOWER_LTNCG]	= "yespowerLTNCG    CrionicCoin, LTNCG",
 	[ALGO_YESPOWER_MGPC]	= "yespowerMGPC     MagpieCoin",

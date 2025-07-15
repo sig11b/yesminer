@@ -16,6 +16,7 @@ Git tree:  https://github.com/sig11b/yesminer
   yescryptR32      DMS, WAVI
   yespower         BellCoin, Veco, SwampCoin
   yespowerADVC     AdventureCoin
+  yespowerBlake256 untested, Dogemone (DME), stratum of DME pools is incompatible
   yespowerEQPAY    EQPAY
   yespowerLTNCG    CrionicCoin, LTNCG
   yespowerMGPC     MagpieCoin

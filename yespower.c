@@ -29,7 +29,7 @@
 #include "cpuminer-config.h"
 #include "miner.h"
 
-#include "yespower-1.0.1/yespower.h"
+#include "yespower-1.0.1/yespower-pow.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -92,6 +92,12 @@ bool setup_variant()
 		params.r = 32;
 		params.pers = (const uint8_t*) "CPUpower: The number of CPU working or available for proof-of-work mining";
 		break;
+	case ALGO_YESPOWER_BLAKE256:
+		params.version = YESPOWER_1_0_BLAKE256;
+		params.N = 2048;
+		params.r = 32;
+		params.pers = NULL;
+		break;
 	case ALGO_YESPOWER_EQPAY:
 		params.version = YESPOWER_1_0;
 		params.N = 2048;
@@ -135,7 +141,7 @@ bool setup_variant()
 		params.pers = (const uint8_t*) "Magpies are birds of the Corvidae family.";
 		break;
 	case ALGO_YESPOWER_POWER2B:
-		params.version = YESPOWER_1_0;
+		params.version = YESPOWER_1_0_BLAKE2B;
 		params.N = 2048;
 		params.r = 32;
 		params.pers = (const uint8_t*) "Now I am become Death, the destroyer of worlds";
@@ -214,8 +220,13 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 			params.perslen = 80;
 		}
 
-		if (yespower_tls(data.u8, 80, &params, &hash.yb))
-			abort();
+		if (opt_algo == ALGO_YESPOWER_POWER2B || opt_algo == ALGO_YESPOWER_BLAKE256) {
+			if (yespower_tls_blake(data.u8, 80, &params, &hash.yb))
+				abort();
+		} else {
+			if (yespower_tls(data.u8, 80, &params, &hash.yb))
+				abort();
+		}
 
 		if (le32dec(&hash.u32[7]) <= Htarg) {
 			for (i = 0; i < 7; i++)
