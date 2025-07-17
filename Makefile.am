@@ -14,7 +14,7 @@ bin_PROGRAMS	= yesminer
 
 dist_man_MANS	= yesminer.1
 
-CLEANFILES 	= yesminer.1
+CLEANFILES 	= yesminer.1 yespower-1.0.1/yespower-sse2neon.c
 
 yesminer_SOURCES	=	elist.h miner.h compat.h \
 				cpu-miner.c util.c \
@@ -23,9 +23,21 @@ yesminer_SOURCES	=	elist.h miner.h compat.h \
 				yespower-1.0.1/yespower-pow.c \
 				yespower.c
 
-yesminer_LDFLAGS	= $(PTHREAD_FLAGS)
-yesminer_LDADD		= @LIBCURL@ @JANSSON_LIBS@ @PTHREAD_LIBS@ @WS2_LIBS@
-yesminer_CPPFLAGS	= $(PTHREAD_FLAGS) @CPPFLAGS@ $(JANSSON_INCLUDES)
+yespower-1.0.1/yespower-pow.c: yespower-1.0.1/yespower-sse2neon.c
+
+yespower-1.0.1/yespower-sse2neon.c: yespower-1.0.1/yespower-opt.c
+	sed \
+	-e 's/#include <[e,x,s]mmintrin.h>/#include "sse2neon.h"/' \
+	-e 's/#include "yespower-opt.c"/#include "yespower-sse2neon.c"/' \
+	$? > $@
+#all	-e 's/#include <[e,x,p,t,s,n,w]mmintrin.h>/#include "sse2neon.h"/'
+
+#yespower-1.0.1/yespower-pow.o : CFLAGS += -D__SSE__ -D__SSE2__ -D__AVX__
+
+
+AM_LDFLAGS	= $(PTHREAD_FLAGS)
+yesminer_LDADD	= @LIBCURL@ @JANSSON_LIBS@ @PTHREAD_LIBS@ @WS2_LIBS@
+AM_CPPFLAGS	= $(PTHREAD_FLAGS) @CPPFLAGS@ $(JANSSON_INCLUDES)
 
 #
 %.1: manpage.in miner.h AUTHORS

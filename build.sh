@@ -1,10 +1,9 @@
 # CLEAN
 make distclean || echo clean
-rm -f config.status
 
 # BUILD
-./autogen.sh
-./configure CFLAGS="-Wall -O2 -fomit-frame-pointer"
+autoreconf -i
+./configure CFLAGS="-Wall -O2 -fomit-frame-pointer $1"
 make -j$(nproc)
 #strip -s sugarmaker
 

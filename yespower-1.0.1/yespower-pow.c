@@ -31,11 +31,48 @@
 
 /*
  * Including "yespower-opt.c" seems to be an ugly solution. However,
- * that way, solardiz's upstream version remains unchaged and an update
+ * that way, solardiz's upstream version remains unchanged and an update
  * can be dropped in without worrying too much.
+ *
+ * Note: yespower-sse2neon.c is generated from yespower-opt.c via
+  sed -e 's/#include <[e,x,s]mmintrin.h>/#include "sse2neon.h"/' \
+      -e 's/#include "yespower-opt.c"/#include "yespower-sse2neon.c"/'
+  or
+  sed -e 's/#include <[e,x,p,t,s,n,w]mmintrin.h>/#include "sse2neon.h"/'
+      -e 's/#include "yespower-opt.c"/#include "yespower-sse2neon.c"/'
+  through a Makefile[.am] rule.
  */
 
+#if defined(__aarch64__) || defined(__ARM_ARCH)
+// NEON, crypto and crc may be relevant for sse2neon
+// different -march= flags may yield different results
+#ifdef __aarch64__
+#warning "Note: I have __aarch64__"
+#endif
+#ifdef __ARM_ARCH
+#warning "Note: I have __ARM_ARCH " __ARM_ARCH
+#endif
+#ifdef __ARM_NEON
+#warning "Note: I have __ARM_NEON"
+#endif
+#ifdef __ARM_FEATURE_CRYPTO
+#warning "Note: I have __ARM_FEATURE_CRYPTO"
+#endif
+#ifdef __ARM_FEATURE_CRC32
+#warning "Note: I have __ARM_FEATURE_CRC32"
+#endif
+#endif
+
+#ifdef __ARM_NEON
+#define __SSE__
+#define __SSE2__
+#define __AVX__
+//  __SSE4_1_ may only be needed together with x86 type CPUs
+#define __SSE4_1_
+#include "yespower-sse2neon.c"
+#else
 #include "yespower-opt.c"
+#endif
 #include "yespower-pow.h"
 
 /**

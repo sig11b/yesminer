@@ -35,8 +35,8 @@ Historic algorithms:
 
 ### Basic Unix build instructions:
 ```
-./autogen.sh
-./configure CFLAGS="-Wall -O2 -fomit-frame-pointer" CXXFLAGS="$CFLAGS -std=gnu++11"
+autoreconf -i
+./configure CFLAGS="-Wall -O2 -fomit-frame-pointer"
 make
 ```
 Or using the shortcut
@@ -51,8 +51,9 @@ Run `yesminer --help` to see options.
 ### Author
 - Jeff Garzik
 - Pooler
-- Alexander Peslyak
+- Alexander Peslyak (yespower algorithm implementation)
 - Kanon
+- DLT collaboration (sse2neon)
 - sig11
 
 
