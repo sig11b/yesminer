@@ -182,13 +182,13 @@ enum algos {
 
 static const char *algo_names[] = {
 	[ALGO_YESCRYPT]		= "yescrypt         GlobalBost-Y, Myriad, Unitus",
-	[ALGO_YESCRYPT_R8]	= "yescryptR8       Mateable, BitZeny",
+	[ALGO_YESCRYPT_R8]	= "yescryptR8       BitZeny, Mateable",
 	[ALGO_YESCRYPT_R16]	= "yescryptR16      Fennec, GoldCash, ELI",
 	[ALGO_YESCRYPT_R32]	= "yescryptR32      DMS, WAVI",
 	[ALGO_YESPOWER]		= "yespower         BellCoin, Veco, SwampCoin",
 	[ALGO_YESPOWER_ADVC]	= "yespowerADVC     AdventureCoin",
 	[ALGO_YESPOWER_CPU]	= "cpupower         CPUchain",
-	[ALGO_YESPOWER_BLAKE256]= "yespowerBlake256 untested, Dogemone (DME)\n                                stratum of DME pools is incompatible",
+	[ALGO_YESPOWER_BLAKE256]= "yespowerBlake256 untested (Dogemone has incompatible net protocols)",
 	[ALGO_YESPOWER_EQPAY]	= "yespowerEQPAY    EQPAY",
 	[ALGO_YESPOWER_LTNCG]	= "yespowerLTNCG    CrionicCoin, LTNCG",
 	[ALGO_YESPOWER_MGPC]	= "yespowerMGPC     MagpieCoin",

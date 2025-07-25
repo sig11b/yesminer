@@ -1,11 +1,8 @@
 
-sugarmaker
-sugarmaker.exe
+yesminer
+yesminer.1
+yesminer.exe
 *.o
-
-# old binary
-minerd
-minerd.exe
 
 autom4te.cache
 .deps
@@ -27,6 +24,8 @@ config.status
 config.status.lineno
 config.guess
 config.sub
+
+yespower-1.0.1/yespower-sse2neon.c
 
 mingw32-config.cache
 

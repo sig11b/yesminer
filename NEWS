@@ -1,3 +1,14 @@
+Version 2.6.0 - July 25, 2025
+
+- First release as yesminer
+- 10-30% speedup on ARM (due to sse2neon.h)
+- Added all currently relevant and historic variants:
+  * yescrypt, yescryptR(8,16,32)
+  * cpupower, yespowerADVC, yespowerBlake256,
+    yespowerEQPAY, yespowerLTNCG, yespowerMGPC,
+    yespowerTIDE, yespowerARWN, yespowerRES
+- Fix power2b bug on ARM or with clang
+
 Version 2.5.0-sugar4 - March 23, 2020
 
 - Performance improves on Yespower

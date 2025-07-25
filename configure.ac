@@ -1,7 +1,7 @@
-AC_INIT([yesminer], [2.6.0])
+AC_INIT([yesminer],[2.6.0])
 
-AC_PREREQ([2.59c])
-AC_CANONICAL_SYSTEM
+AC_PREREQ([2.69])
+AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR([cpu-miner.c])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_HEADERS([cpuminer-config.h])
@@ -12,8 +12,9 @@ AM_MAINTAINER_MODE
 EXTERNAL_CFLAGS="$CFLAGS"
 
 dnl Checks for programs
-AC_PROG_CC_C99
-AC_PROG_GCC_TRADITIONAL
+AC_PROG_CC
+dnl - obsolote? AC_PROG_CC_C99
+dnl - obsolote? AC_PROG_GCC_TRADITIONAL
 AM_PROG_CC_C_O
 AM_PROG_AS
 AC_PROG_RANLIB
@@ -21,12 +22,13 @@ AC_PROG_RANLIB
 if test -n "$EXTERNAL_CFLAGS"; then
 	CFLAGS="$EXTERNAL_CFLAGS"
 else
-	CFLAGS='-Wall -O2 -fomit-frame-pointer'
+	CFLAGS='-Wall -O3 -fomit-frame-pointer -march=native'
 fi
 
 dnl Checks for header files
-AC_HEADER_STDC
+dnl - obsolote? AC_HEADER_STDC
 AC_CHECK_HEADERS([sys/endian.h sys/param.h syslog.h])
+AC_CHECK_LIB([log],[syslog])
 # sys/sysctl.h requires sys/types.h on FreeBSD
 # sys/sysctl.h requires sys/param.h on OpenBSD
 AC_CHECK_HEADERS([sys/sysctl.h], [], [],

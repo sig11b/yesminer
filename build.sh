@@ -3,9 +3,6 @@ make distclean || echo clean
 
 # BUILD
 autoreconf -i
-./configure CFLAGS="-Wall -O2 -fomit-frame-pointer $1"
+./configure CFLAGS="-Wall -O3 -fomit-frame-pointer -march=native $1"
 make -j$(nproc)
-#strip -s sugarmaker
 
-# CHECK STATIC
-#file sugarmaker | grep "dynamically linked"

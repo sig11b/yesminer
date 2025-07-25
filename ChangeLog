@@ -1,1 +1,878 @@
-See git repository ('git log') for full changelog.
+2025-07-25  as  <sig11@bootblock.de>
+	Version 2.6.0:
+	Makefile.am, configure.ac: more up to date and everything working
+	Documentation: more complete
+	Minor cleanup for release
+2025-07-20  as  <sig11@bootblock.de>
+	ARM optimization: using sse2neon.h (10-30% speedup)
+2025-07-17  as  <sig11@bootblock.de>
+	Power2b: integrated into yespower-1.0.1
+	Implemented yespowerB256 (untested, Dogemone has incompatible stratum)
+2025-07-12  as  <sig11@bootblock.de>
+	Solve the yescrypt issue BEFORE calling yespower_tls()
+	revert yespower-1.0.1 to solardiz's upstream version
+2025-07-11  as  <sig11@bootblock.de>
+	Cleanup, typos, minor fixes, +RES coin :-)
+2025-07-09  as  <sig11@bootblock.de>
+	Branding. Man page and minor help improvement
+2025-07-06  as  <sig11@bootblock.de>
+	Switched all, except power2b, to new algo-implementation
+	Implemented: cpupower, yespowerARWN, yespowerEQPAY,
+	             yespowerLTNCG, yespowerMGPC, yespowerTIDE
+	Ordered algos, more common algo names, minor cleanup
+	yescrypt: fix yespower_0_5 to behave like yescrypt coins
+	Cleaner and more flexible implementation of algo variant selection
+	Implemented: yescrypt, yescryptr8, yescryptr16, yescryptr32,
+	             yespoweradvc
+	Updated yespower implemenation to latest version
+	Credits and Copyright: Solar Designer
+2025-07-04  as  <sig11@bootblock.de>
+	power2b: fix AKA Clang compatibilty
+	Revert "Added AUR badge to README (#43)"
+	This reverts commit 3a1a756dd623e6d8f5290d9ad4bf1b3d8be719ae.
+2021-01-19  Sandelinos  <26635624+Sandelinos@users.noreply.github.com>
+	Added AUR badge to README (#43)
+2020-11-15  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	doc: delete author's email
+2020-09-25  tempdevelop001  <50555826+tempdevelop001@users.noreply.github.com>
+	    kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	add: Yenten (#38)
+	* Add yespowerr16 algo for Yenten Coin
+	cmd for test:
+	```
+	sugarmaker.exe -a yespowerr16 -o stratum+tcp://cpu-pool.com:63368 -u wallet_address
+	```
+	* rename: YespowerYtn
+	* reorder
+2020-03-23  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	remove: ASCII color from credits
+	fix: solo mining url to http:// (#35)
+2020-03-22  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	move: mining-script
+	Merge #34 bump version to v2.5.0-sugar4 (v4)
+	doc
+	bump version to v2.5.0-sugar4 (v4)
+	cleanup
+	move: drop name static (#33)
+	* move: drop filename static
+	* move: drop dirname static
+2020-03-21  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	doc
+	Merge #32 add: show credit at startup
+	add: show credit at startup
+	build.sh faster
+	add: newcoin: MicroBitcoin (MBC) power2b (#31)
+	* add: newcoin: MicroBitcoin (MBC)
+	* add: yespower-1.0.1-power2b (MBC)
+	* https://github.com/decryp2kanon/yespower-1.0.1-power2b
+	* move: _P2B _p2b yespower_tls_p2b PBKDF2_SHA256_P2B yespower_p2b YESPOWER_1_0_BLAKE2B, Swidth_to_Sbytes1_P2b yespower_binary_t_p2b HMAC_SHA256_Buf_P2b smix_1_0_p2b
+	* fix: memcpy
+2020-03-19  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	Merge #30 add: newcoin
+	add: newcoin: Intercoin (ITC)
+	add: newcoin: IOTS (IOTS)
+	add: newcoin: LightBit (LITB)
+	Revert "add: newcoin: LightningCash-Gold (LTNCG)"
+	This reverts commit f4ba0ad2165185d5bd74e5e318a6290e6b39bef5.
+	fix: note: containing loop
+	add: newcoin: LightningCash-Gold (LTNCG)
+	add: newcoin: Uraniumx (URX)
+	add: newcoin: YespowerNull: CranePay, Bellcoin, Veco, SwampCoin
+	cleanup
+	fix: yespower mining performance (#29)
+	* fix: yespower mining performance
+	* add: copyright
+	* fix: ISO
+2020-03-16  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	Merge #26 add: newcoin: IsotopeC (ISO)
+	add: newcoin: IsotopeC (ISO)
+	doc
+2020-03-15  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	doc
+	bump version to v2.5.0-sugar3 (v3) (#25)
+	add: deps for osx static
+	add: deps for armv7l static
+	add: deps for aarch64 static
+	add: deps for linux32 static (#24)
+	cleanup: build (#23)
+	fix: build conditional for all platforms (#22)
+	* remove: check libcurl version
+	* *-*-mingw*
+	* libcurl check if mingw
+	* *-apple-*)
+	* hotfix: OSX build
+2020-03-14  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	fix: linux64-static build (#21)
+	* add: --with-curl, --with-crypto for linux64-static
+	add: deps for win64 (missing pthread-win32) (#20)
+	* delete: pthread-win32
+	* add: pthread-win32
+	* add: deps for win64 (missing)
+	Merge #19 add: deps for windows builds (64/32-bit)
+	add: build deps for win32 static
+	fix: deps location for windows
+	add: build deps for win64 static
+	.gitignore
+	seperate deps: win64 and win32
+	add: build-from-source
+	move: deps to deps-windows
+	bump version to sugarmaker 2.5.0-sugar2
+	Merge #18 cleanup
+	rename
+	delete: unuseful builds
+	delete: depends: curl and openssl
+	fix: bat location
+	fix: sh location
+	move: sh and bat for mining script
+	add: build for win32 static +MSSE2 (#17)
+	add: build for win32 static (#16)
+	Merge #15 add: build for win64 static
+	add: build for win64 static
+	add: build_win_x64_deps.sh
+	Revert "Rework libcurl detection"
+	This reverts commit 63e7143113ec35a0581e7e6ccb1d37ab4b03237a.
+2020-03-13  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	add: build for OSX
+2020-03-12  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	add: build for linux32 static
+	add: build for armv7l (ARM-32bit) static (#13)
+	Merge #12 add: build for aarch64 static
+	add: build for aarch64 static
+	add: --with-crypto for openssl location
+2020-03-11  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	Merge #9 add: linux64-static
+	add: sh for linux
+	add: build for linux64 static
+	fix: build.sh: rm -f config.status
+	doc
+	Merge #7 add: winows build
+	add: w32-msse2 (but not working)
+	add: windows batch
+	add: windows build both 32/64-bit
+	move: depends
+2020-03-11  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	Revert "Use system topology info to bind threads to CPUs optimally"
+	This reverts commit 7b8f0c5a3dbf2b1c6beed20131902795b58bfbcb.
+	+#define PROGRAM_NAME		"sugarmaker"
+2020-03-11  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	Revert "Set default thread count to physical CPU core count"
+	This reverts commit d6e46f25b2a86302c62f11268ed6c1a6832f796e.
+	add: depends for windows build
+2020-03-10  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	.gitignore
+2020-03-09  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	fix: build error Makefile.am: error: required file './README' not found
+	Merge #5
+	doc: README.md for Sugarchain
+	doc: README
+	bump version: 2.5.0-sugar1 2020-03-09
+	Merge #4 fix: branding
+	fix: manpage $ man ./sugarmaker.1
+	move: filename: minerd.1
+	rebranding: sugarmaker
+	.gitignore
+	doc: Dockerfile
+	fix: disable log SOLO: "LONGPOLL pushed new work" STRATUM(POOL): "Stratum requested work restart"
+2020-03-08  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	Merge #3 fix: misc
+2020-03-08  Solar Designer  <solar@resistance.io>
+	Set default thread count to physical CPU core count remove: duplicated cpu found
+	Use system topology info to bind threads to CPUs optimally
+	Compute/cache start_nonce out of miner_thread()'s loop keep old:
+	In submit_upstream_work(), don't use uint32_t for host-neutral representations keep old: 		le32enc(ntime, work->data[17]); 		le32enc(nonce, work->data[19]);
+2020-03-08  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	Merge #2 remove: drop all old PoW schemes
+2020-03-08  Solar Designer  <solar@resistance.io>
+	Drop unused sha256d_80_swap() and num_primes
+2020-03-08  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	remove: drop all old PoW schemes
+	Merge #1 add: Sugarchain
+	fix: YespowerSugar fit into n2048r32
+	.gitignore
+	add: YespowerSugar
+	cleanup: Makefile.am
+2020-03-08  Solar Designer  <solar@resistance.io>
+	"AUTOMAKE_OPTIONS = subdir-objects" for readiness to new automake
+	Parse and report JSON-RPC errors despite of HTTP errors
+	Don't fallback to getwork
+	Bring libcurl linking closer to old version's and cpuminer-opt's
+	Don't include build date/time to allow reproducible builds
+	Suppress unimportant GCC 8+ warnings
+	Rework libcurl detection
+	Move our recommended CFLAGS from README to configure.ac -README
+	Fix portability issue of "Set default thread count to physical CPU core count"
+	Set default thread count to physical CPU core count +no random
+	Saner first step duration and thread-safety of benchmark mode +ALGO_RES_YESPOWER_1_0
+	Report hash/s, not khash/s
+	Drop nomacro.pl (was only relevant with USE_ASM)
+	Drop USE_ASM logic as it didn't apply to yespower
+2020-03-08  kanon  <60179867+decryp2kanon@users.noreply.github.com>
+	add: yespower-1.0.1
+2019-06-11  pooler  <pooler@litecoinpool.org>
+	Merge pull request #180 from tyabu12/update_ubuntu_14.04_to_16.04
+	Update Ubuntu version 14.04 to 16.04 in Dockerfile
+2019-06-08  Tomohito YABU  <tyabu1212@gmail.com>
+	Update Ubuntu version 14.04 to 16.04
+	Ubuntu 14.04 is the end of support.
+2019-01-08  pooler  <pooler@litecoinpool.org>
+	Add support for bech32 addresses (BIP 173)
+2017-06-22  pooler  <pooler@litecoinpool.org>
+	Version 2.5.0
+	README: update comment on nomacro.pl
+2017-06-21  pooler  <pooler@litecoinpool.org>
+	Fix PowerPC assembly on AIX
+2017-04-28  pooler  <pooler@litecoinpool.org>
+	Add basic Segwit support
+2017-04-20  pooler  <pooler@litecoinpool.org>
+	Fix #117
+2017-04-15  pooler  <pooler@litecoinpool.org>
+	Merge pull request #116 from junondev/patch-1
+	Update Makefile.am
+2017-04-13  junondev  <junonLLC@gmail.com>
+	Update Makefile.am
+	Fixed linux build error when trying to LIBCURL_CHECK_CONFIG (INCLUDES is the deprecated version of AM_CPPFLAGS).
+2016-11-23  pooler  <pooler@litecoinpool.org>
+	Account for 64-bit pointers on PowerPC
+2016-08-21  pooler  <pooler@litecoinpool.org>
+	Merge pull request #108 from dersand/master
+	Add small disclaimer for ./configure flag
+2016-08-21  Erik Lilja  <erik.liljaa@live.se>
+	Add small disclaimer for ./configure flag
+	Added a comment to make sure the user isn't accidently typing -03 instead of -O3.
+2016-06-10  pooler  <pooler@litecoinpool.org>
+	Version 2.4.5
+2016-04-21  pooler  <pooler@litecoinpool.org>
+	Fix memory leak in the long polling thread
+2016-03-24  pooler  <pooler@litecoinpool.org>
+	Version 2.4.4
+2016-03-15  pooler  <pooler@litecoinpool.org>
+	Fix memory leaks affecting getblocktemplate
+2016-01-24  pooler  <pooler@litecoinpool.org>
+	Version 2.4.3
+2015-12-30  pooler  <pooler@litecoinpool.org>
+	Emit a warning on unrecognized block versions
+2015-11-15  pooler  <pooler@litecoinpool.org>
+	Allow block version 4
+2015-09-21  pooler  <pooler@litecoinpool.org>
+	Merge pull request #94 from adriano-io/dev
+	Modified Dockerfile and Ubuntu Version to 14.04
+2015-09-19  Adriano  <adriano.celentano@rackspace.co.uk>
+	Modified Dockerfile to reduce the Virtual Memory footprint and total amount of images. Before modification the total memory footprint was around 3GB and this has now been reduced by ~50%
+2015-05-17  pooler  <pooler@litecoinpool.org>
+	Add support for VIA PadLock Hash Engine on x86-64
+2015-04-28  pooler  <pooler@litecoinpool.org>
+	Version 2.4.2
+2015-04-16  pooler  <pooler@litecoinpool.org>
+	Use SSL certificate with Stratum when provided
+2015-04-07  pooler  <pooler@litecoinpool.org>
+	Add support for Stratum over TLS
+2015-02-28  pooler  <pooler@litecoinpool.org>
+	Allow block version 3
+2015-02-25  pooler  <pooler@litecoinpool.org>
+	Version 2.4.1
+	Modify nomacro.pl to expand assembler macros
+	Add optimized PowerPC code
+2015-02-14  pooler  <pooler@litecoinpool.org>
+	Support arbitrary-size arguments to mining.submit
+	Fixes #87
+2015-01-05  pooler  <pooler@litecoinpool.org>
+	getblocktemplate: ignore higher bits of "version"
+	Allows use of getblocktemplate with merge-mined cryptocurrencies
+	that store the chain ID in the block version.
+2014-08-08  pooler  <pooler@litecoinpool.org>
+	Check for negative extranonce2_size
+2014-05-25  pooler  <pooler@litecoinpool.org>
+	Add support for scrypt(N, 1, 1)
+2014-05-22  pooler  <pooler@litecoinpool.org>
+	Switch to getwork if no payout address is provided
+2014-05-20  pooler  <pooler@litecoinpool.org>
+	Version 2.4
+2014-05-16  pooler  <pooler@litecoinpool.org>
+	Add a configure option to disable assembly code
+	Do not use the non-standard typeof operator
+2014-05-11  pooler  <pooler@litecoinpool.org>
+	Hide passwords on the command line
+	Closes #76
+2014-05-10  pooler  <pooler@litecoinpool.org>
+	Allow loading multiple configuration files
+2014-05-09  pooler  <pooler@litecoinpool.org>
+	Enhance startup error messages
+	Add option --coinbase-sig
+	getblocktemplate: version/force, version/reduce
+	Correct work restart messages
+	getblocktemplate: long polling
+	Avoid fetching too much work when LP is off
+	getblocktemplate: submit/coinbase
+	Minimal getblocktemplate support
+2014-04-16  pooler  <pooler@litecoinpool.org>
+	Allow environment-defined tunnelling HTTP proxies
+	Add an option to ignore redirection requests
+	Disable long polling timeout by default
+2014-04-15  pooler  <pooler@litecoinpool.org>
+	Allow tunnelling Stratum through an HTTP proxy
+2014-04-14  pooler  <pooler@litecoinpool.org>
+	Add a flags argument to json_rpc_call()
+2014-04-11  pooler  <pooler@litecoinpool.org>
+	Allow arbitrary-size job_id and extranonce2
+2014-04-05  pooler  <pooler@litecoinpool.org>
+	Add build details to version information
+2014-03-31  pooler  <pooler@litecoinpool.org>
+	Print an error message if mining.subscribe fails
+2014-03-28  pooler  <pooler@litecoinpool.org>
+	Only increment extranonce2 when needed
+2014-03-12  pooler  <pooler@litecoinpool.org>
+	Merge pull request #68 from kiyominer/master
+	fix sched_setaffinity parameter : sizeof(cpu_set_t)
+2014-03-12  Kiyoaki Matsugae  <matsugae.kiyoaki@gmail.com>
+	fix sched_setaffinity parameter : sizeof(cpu_set_t)
+2014-03-06  pooler  <pooler@litecoinpool.org>
+	Add support for building under 64-bit Cygwin
+	Also check for _WIN64 instead of WIN64 in assembly sources
+2014-02-27  pooler  <pooler@litecoinpool.org>
+	Version 2.3.3
+2014-02-18  pooler  <pooler@litecoinpool.org>
+	Fix CPU affinity on FreeBSD (closes #61)
+2014-01-18  pooler  <pooler@litecoinpool.org>
+	Make the --url option mandatory
+	Do not switch to Stratum if using an HTTP proxy
+2014-01-16  pooler  <pooler@litecoinpool.org>
+	Use only g_work_time to check work availability
+2014-01-15  pooler  <pooler@litecoinpool.org>
+	Merge pull request #53 from clbr/fixes
+	Fix scheduling policy change on Linux
+2014-01-14  Lauri Kasanen  <curaga@operamail.com>
+	SCHED_IDLE and SCHED_BATCH can only be used with sched_priority 0
+	The function was randomly failing to drop the priority, because the
+	field was not initialized - it was random garbage instead of 0, leading
+	to EINVAL.
+	Mark some variables & function static
+2013-12-13  pooler  <pooler@litecoinpool.org>
+	Merge pull request #45 from creack/master
+	Add dockerfile
+2013-12-13  Guillaume J. Charmes  <charmes.guillaume@gmail.com>
+	Add dockerfile
+2013-12-13  pooler  <pooler@litecoinpool.org>
+	Fix processor count detection with HW_NCPU
+2013-11-06  pooler  <pooler@litecoinpool.org>
+	Expand the description of the --config option
+2013-11-03  pooler  <pooler@litecoinpool.org>
+	Add a man page for minerd
+2013-10-05  pooler  <pooler@litecoinpool.org>
+	Define sleep() as a macro on Windows
+2013-10-04  pooler  <pooler@litecoinpool.org>
+	Skip compilation of unused assembly sources
+2013-07-12  pooler  <pooler@litecoinpool.org>
+	Include inttypes.h instead of stdint.h
+	stdint.h is unavailable on some systems, such as Solaris 8
+2013-07-10  pooler  <pooler@litecoinpool.org>
+	Version 2.3.2
+2013-07-05  pooler  <pooler@litecoinpool.org>
+	Add AVX2-enabled functions for x86-64
+2013-07-04  pooler  <pooler@litecoinpool.org>
+	Explicitly flush stderr in applog()
+2013-07-03  pooler  <pooler@litecoinpool.org>
+	Avoid the use of Stratum in benchmark mode
+	Do not log per-thread CPU affinity in quiet mode
+	Make benchmark data more realistic
+2013-06-24  pooler  <pooler@litecoinpool.org>
+	Fix array index out of bounds in sha256d()
+2013-06-18  pooler  <pooler@litecoinpool.org>
+	Version 2.3.1
+2013-06-17  pooler  <pooler@litecoinpool.org>
+	Accept any non-false result for mining.authorize
+2013-06-16  pooler  <pooler@litecoinpool.org>
+	Fix hash endianness for SHA-256d
+2013-06-15  pooler  <pooler@litecoinpool.org>
+	Avoid passing NULL to strcmp() in stratum_thread()
+2013-06-13  pooler  <pooler@litecoinpool.org>
+	Merge commit 'b6f26e1' from martinwguy/master
+	Add "cert" option for rpc server's self-signed SSL certificate
+2013-06-12  pooler  <pooler@litecoinpool.org>
+	Version 2.3
+2013-06-10  pooler  <pooler@litecoinpool.org>
+	Ignore getwork errors when switching to Stratum
+2013-06-09  pooler  <pooler@litecoinpool.org>
+	Perform global libcurl initialization
+	curl_easy_init() is not thread-safe unless curl_global_init() has
+	already been called.
+	It seems that SSL initialization is slow on Windows, so only do that
+	if the mining server has to be accessed via HTTPS.
+	Thanks to @martinwguy for pointing this out.
+	Replace sscanf() with strtol() in hex2bin()
+	Ignore configure.lineno and config.status.lineno
+	Add Stratum support
+2013-06-08  Martin Guy  <martinwguy@gmail.com>
+	Add "cert" option for rpc server's self-signed SSL certificate
+	When minerd is used across the internet, the server's rpc userpass
+	travel unexcrypted, allowing anyone en route to copy them and
+	empty the server's wallet. Using https: would prevent this
+	but minerd's SSL connection fails on self-signed certificates.
+	This change adds a "-cert file" option (cert:"file" in minerd.conf)
+	to tell minerd the filename of the server's self-signed certificate.
+2013-05-21  pooler  <pooler@litecoinpool.org>
+	Merge pull request #19 from lye/freebsd-cpu-pinning
+	Add FreeBSD support for setting CPU affinity.
+2013-04-17  lye  <lye@>
+	Add FreeBSD support for setting CPU affinity.
+2013-04-14  pooler  <pooler@litecoinpool.org>
+	Merge branch 'freebsd-avx-support' of https://github.com/lye/cpuminer
+2013-04-13  lye  <lye@>
+	Recognize amd64 installs as 86_64 arches.
+	FreeBSD calls x86_64 "amd64", so this allows allows FreeBSD installs to
+	have AVX/XOP support without any significant modifications -- it should
+	be noted that the base install of gcc doesn't actually have support,
+	but a later version from ports can be installed by the user and chosen
+	via e.g., `CC=/usr/local/bin/gcc48`.
+2013-04-06  pooler  <pooler@litecoinpool.org>
+	Update download URL
+2013-03-24  pooler  <pooler@litecoinpool.org>
+	Tweak the User-Agent header to comply with RFC 2616
+2012-08-21  pooler  <pooler@litecoinpool.org>
+	Allow specification of username in URL
+2012-08-05  pooler  <pooler@litecoinpool.org>
+	Version 2.2.3
+	Add a --benchmark option for offline testing
+2012-08-04  pooler  <pooler@litecoinpool.org>
+	Add optimized ARM NEON code for scrypt and SHA-256d
+	Add duration of getwork requests to debug output
+2012-06-13  pooler  <pooler@litecoinpool.org>
+	Add support for the X-Reject-Reason extension
+2012-06-11  pooler  <pooler@litecoinpool.org>
+	Allow libcurl to rewind the upload buffer
+2012-06-10  pooler  <pooler@litecoinpool.org>
+	Reorder a few instructions in the AVX version of scrypt
+2012-06-07  pooler  <pooler@litecoinpool.org>
+	Version 2.2.2
+	Set the priority of miner threads to idle on Windows
+2012-06-05  pooler  <pooler@litecoinpool.org>
+	Fix redefinition of alloca when compiling with MinGW-w64
+2012-06-04  pooler  <pooler@litecoinpool.org>
+	Add optimizations for ARMv5E and later processors
+	Avoid 3-way scrypt on AMD Bobcat
+	General optimizations for scrypt on x86-64
+2012-06-03  pooler  <pooler@litecoinpool.org>
+	Set symbol type for global functions on ARM
+	Fixes ARM thumb support on Debian armhf
+2012-06-02  pooler  <pooler@litecoinpool.org>
+	Use _SC_NPROCESSORS_CONF instead of _SC_NPROCESSORS_ONLN
+	Do not set thread affinity on single-processor systems
+2012-05-28  pooler  <pooler@litecoinpool.org>
+	Performance tweaks for AMD K8 and Intel Atom
+2012-05-26  pooler  <pooler@litecoinpool.org>
+	Avoid 3-way scrypt on Intel Atom
+	Reorder SSE2 instructions for better performance
+2012-05-05  pooler  <pooler@litecoinpool.org>
+	Add an option to start minerd as a daemon
+2012-05-02  pooler  <pooler@litecoinpool.org>
+	Version 2.2.1
+2012-05-01  pooler  <pooler@litecoinpool.org>
+	Reschedule ARM instructions for dual issue
+2012-04-29  pooler  <pooler@litecoinpool.org>
+	Add optimized code for ARM11 processors
+2012-04-16  pooler  <pooler@litecoinpool.org>
+	Rename time_lock to avoid name conflict on AIX
+2012-04-08  pooler  <pooler@litecoinpool.org>
+	Use getopt() if getopt_long() is not available
+	Use syslog() instead of vsyslog()
+	vsyslog() is not available on AIX and other platforms.
+	Check for <sys/endian.h> functions in configure
+	On NetBSD stdlib.h indirectly includes sys/endian.h, causing the
+	(be|le)32(enc|dec) functions to be already defined.
+2012-04-07  pooler  <pooler@litecoinpool.org>
+	Check for <sys/sysctl.h> in configure
+	Also check for <sys/param.h>, which is a prerequisite on OpenBSD
+2012-04-06  pooler  <pooler@litecoinpool.org>
+	Change comment style in .S files
+2012-04-02  pooler  <pooler@litecoinpool.org>
+	Version 2.2
+	Fix 4-way and 12-way scrypt
+2012-04-01  pooler  <pooler@litecoinpool.org>
+	Reduce register usage in 4-way SHA-256
+	Make full use of 4-way SHA-256 in scrypt
+2012-03-31  pooler  <pooler@litecoinpool.org>
+	Add optimized SHA-256d implementation for x86
+2012-03-30  pooler  <pooler@litecoinpool.org>
+	Change the default timeout to 270 seconds
+	Exploit constants in SHA-256d
+2012-03-26  pooler  <pooler@litecoinpool.org>
+	Avoid unnecessary computations in SHA-256d on x86-64
+2012-03-25  pooler  <pooler@litecoinpool.org>
+	Skip the last three rounds of SHA-256d
+2012-03-24  pooler  <pooler@litecoinpool.org>
+	Precompute the first few SHA-256d rounds
+2012-03-23  pooler  <pooler@litecoinpool.org>
+	Drop unused 2-way scrypt
+2012-03-22  pooler  <pooler@litecoinpool.org>
+	Enable AVX optimizations in SHA-256 for scrypt
+2012-03-21  pooler  <pooler@litecoinpool.org>
+	Do not print too many decimals
+	Reimplement SHA-256d
+2012-03-12  pooler  <pooler@litecoinpool.org>
+	Move SHA-2 code to separate files
+2012-03-10  pooler  <pooler@litecoinpool.org>
+	Minor cleanups
+	Keep work data in host byte order
+2012-03-07  pooler  <pooler@litecoinpool.org>
+	Version 2.1.5
+	Merge pull request #6 from pontius/cpumine
+	void function cannot return value
+2012-03-07  pontius  <pontius@pdmc.net>
+	void function cannot return value
+2012-03-07  pooler  <pooler@litecoinpool.org>
+	Check whether the assembler supports XOP
+	Add XOP support to scrypt on x86-64
+2012-03-06  pooler  <pooler@litecoinpool.org>
+	Ensure C compiler is in C99 mode
+	Assume HTTP if no protocol is specified
+	Precompute midstate of the first SHA-256 in scrypt
+2012-03-05  pooler  <pooler@litecoinpool.org>
+	Add optimizations for AVX-capable processors
+2012-03-03  pooler  <pooler@litecoinpool.org>
+	Support for pthreads on MinGW-w64
+	Support for building on MinGW
+	- Fix dependency on libws2_32
+	- Update build instructions in the README
+	- Drop mknsis.sh
+2012-03-01  pooler  <pooler@litecoinpool.org>
+	Change comment style in .S files for compatibility
+2012-03-01  pontius  <pontius@pdmc.net>
+	Solaris doesn't have <sys/sysctl.h>.
+2012-02-28  pooler  <pooler@litecoinpool.org>
+	Switch to RIP-relative addressing on x86-64
+	Version 2.1.4
+	Add support for building on Mac OS X
+	Add 4-way SHA-256 implementation for x86-64
+2012-02-26  pooler  <pooler@litecoinpool.org>
+	Add proxy support
+2012-02-25  pooler  <pooler@litecoinpool.org>
+	Add TCP keepalive to long polling connections
+2012-02-24  pooler  <pooler@litecoinpool.org>
+	Allow unauthenticated mining
+2012-02-12  pooler  <pooler@litecoinpool.org>
+	Version 2.1.3
+	Support for "submitold" extension to long polling
+	Add smart handling of long polling failures
+	Switch to short scan time if long polling fails, and try
+	to reactivate it only if the server continues to advertise
+	the feature in HTTP headers.
+2012-02-11  pooler  <pooler@litecoinpool.org>
+	Eliminate the delay between starting threads
+	This is no more needed since miner threads share the result
+	of the same getwork request.
+	Throw an error if non-option arguments are supplied
+	Extract username and password specified in URL
+	Only detect the number of processors once
+2012-02-10  pooler  <pooler@litecoinpool.org>
+	Clean up --help output
+2012-02-09  pooler  <pooler@litecoinpool.org>
+	Add a --version option
+2012-02-08  pooler  <pooler@litecoinpool.org>
+	Do not skip submission of old work
+	This increases compatibility with p2pool
+2012-02-05  pooler  <pooler@litecoinpool.org>
+	Make the hashmeter thread-safe
+	Remove a double test when testing the full hash
+2012-02-03  pooler  <pooler@litecoinpool.org>
+	Handle empty responses properly
+2012-02-01  pooler  <pooler@litecoinpool.org>
+	Add "X-Mining-Extensions: midstate" to HTTP headers
+	Drop support for the the deprecated "midstate" and "hash1" fields.
+2012-01-26  pooler  <pooler@litecoinpool.org>
+	Version 2.1.2
+	- Do not submit work that is known to be stale
+	- Allow miner threads to ask for new work if the current one is at least
+	  45 seconds old and long polling is enabled
+	- Refresh work when long polling times out
+	- Modify x86-64 code to make it compatible with older versions of
+	  binutils
+2012-01-22  pooler  <pooler@litecoinpool.org>
+	Fix minor speed regression on some microarchitectures
+2012-01-21  pooler  <pooler@litecoinpool.org>
+	Version 2.1.1
+	Handle network errors properly
+2012-01-19  pooler  <pooler@litecoinpool.org>
+	Add missing mutex initialization
+	Drastically increase getwork efficiency
+2012-01-17  pooler  <pooler@litecoinpool.org>
+	Version 2.0
+	- Test the whole hash instead of just looking at the high 32 bits
+	- Set idle priority on Windows
+	- Fix parameters -u and -p, and add short options -o and -O
+	- Fix example JSON configuration file
+2012-01-11  pooler  <pooler@litecoinpool.org>
+	Add 3-way scrypt implementation
+2012-01-03  pooler  <pooler@litecoinpool.org>
+	More optimization for x86 and x86-64, including AMD K10
+2011-12-29  pooler  <pooler@litecoinpool.org>
+	Fix endianness-sensitivity
+2011-12-28  pooler  <pooler@litecoinpool.org>
+	Reorder a few instructions
+2011-12-24  pooler  <pooler@litecoinpool.org>
+	Some more optimization
+2011-12-21  pooler  <pooler@litecoinpool.org>
+	Fix minor bugs Change default port to 9332 and remove default credentials Add share summary output
+2011-12-18  pooler  <pooler@litecoinpool.org>
+	Add optimized code for x86 and x86_64
+2011-12-16  pooler  <pooler@litecoinpool.org>
+	Fix timeout bug
+2011-12-04  pooler  <pooler@litecoinpool.org>
+	Add configurable timeout
+2011-10-08  Art Forz  <artforz@localhost>
+	Make scantime retargeting less granular
+2011-10-06  Art Forz  <artforz@localhost>
+	Rearrange order of operations in scrypt salsa20 3.73kH/s/core on a 3.6GHz PhenomII compiled with gcc 4.6.1 and CFLAGS="-march=amdfam10 -O3"
+	Mangle scrypt some more 3.62kH/s/core on a 3.6GHz PhenomII compiled with gcc 4.6.1 and CFLAGS="-march=amdfam10 -O3"
+2011-10-01  Art Forz  <artforz@localhost>
+	Rip out sha256 algos
+	Hopefully fix jansson compatiblity
+	Horribly mangle scrypt.c amd64 linux speedup from 2.02 to 2.67 kH/s with default options, from 2.59 to 3.24kH/s with -O3
+	Unbreak longpolling for scrypt
+2011-09-26  Lolcust  <attorney_at_lol@lawyer.com>
+	Tweaked to be slightly easier to use with Tenebrix, tested.
+2011-09-20  Art Forz  <artforz@dumbo.lan>
+	add scrypt function
+2011-06-14  Jeff Garzik  <jeff@garzik.org>
+	Version 1.0.2.
+2011-06-14  ckolivas  <kernel@kolivas.org>
+	Cope with older linux kernel headers that don't have the newer scheduling policies defined.
+2011-06-09  Jeff Garzik  <jeff@garzik.org>
+	Fix number-of-threads init logic on Windows
+	only read processor count via sysconf on non-Windows platforms
+2011-06-09  Jeff Garzik  <jgarzik@exmulti.com>
+	Merge pull request #22 from chrissicool/master
+	Fix include path of libcurl headers
+	Merge pull request #23 from ckolivas/master
+	Here's my x86_64 and linux optimisations. Hopefully shouldn't break other OSs now.
+2011-06-09  ckolivas  <kernel@kolivas.org>
+	Linux + x86_64 optimisations. Add likely() macro. Optimise a few obvious code paths with likely/unlikely. Change algo to sse2_amd64 by default. Move priority change to worker threads only. Detect number of CPUs and set default number of threads == CPUs. Add scheduling policy change to worker threads to SCHED_IDLE first and fallback to SCHED_BATCH on linux. Don't error when failing to set priority. Add CPU affinity and bind worker threads to CPUs when number of threads is a multiple of number of CPUs. Update NEWS with changes.
+2011-06-09  Christian Ludwig  <chrissicool@chrissicool.net>
+	configure.ac: Beautify yasm test output
+2011-06-08  Christian Ludwig  <chrissicool@chrissicool.net>
+	Fix libcurl include path
+	Fix the include path for libcurl, if it was installed in a location
+	where gcc does not look by default. The variable is declared in
+	the LIBCURL_CHECK_CONFIG m4 macro.
+2011-05-15  Jeff Garzik  <jeff@garzik.org>
+	Version 1.0.1.
+2011-05-10  Jeff Garzik  <jgarzik@exmulti.com>
+	Merge pull request #17 from metonymous/master
+	OSX CPU Support
+2011-05-10  Glenn Francis Murray  <glenn@gfm.cc>
+	OSX Support
+	Derived from xorg source
+	http://cgit.freedesktop.org/xorg/xserver/tree/GL/glx/glxbyteorder.h?id=cdf6b15f039c4905d8d54152153b0a3ecd7aba55;id2=415e49b940bba2d08870db410ebb47d2add5d836
+2011-05-10  Jeff Garzik  <jeff@garzik.org>
+	Version 1.0.
+	jansson 2.x compatibility
+2011-04-11  Jeff Garzik  <jeff@garzik.org>
+	util: correct off-by-one in month display
+2011-04-11  fleger  <florian6.leger@laposte.net>
+	Proper platform detection.
+	Use target instead of host.
+	Fix compilation for non win32 and non x86_64 platforms.
+2011-04-07  Jeff Garzik  <jeff@garzik.org>
+	configure.ac: improve has_yasm test
+2011-03-24  Jeff Garzik  <jeff@garzik.org>
+	Support full URL, in X-Long-Polling header
+2011-03-22  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.8.1.
+	Add User-Agent header to each HTTP request
+	--user/--pass fixes
+	Also, some newline fixes (applog callers do not need newlines in strings)
+2011-03-21  Jeff Garzik  <jeff@garzik.org>
+	example-cfg.json: remove extraneous commas, which broke JSON decode
+	Spotted by lfm
+	Release version 0.8.
+	Update example JSON config
+	Support --user and --pass, as alternative to --userpass
+	Convert remaining [f]print to applog().
+	Also, remove a few superfluous printouts.
+	Avoid potential for div-by-zero, when calculating max-nonce
+	cpu-miner.c: Remove newline from applog() call
+2011-03-21  Jeff Garzik  <jeff@garzik.org>
+	Ensure cpuminer-config.h is universally included, in *.c and *.h alike.
+	In miner.h, this fixes an alloca-definition-related warning.
+	For the other files, this is simply future-proofing/precaution.
+2011-03-18  Jeff Garzik  <jeff@garzik.org>
+	Introduce more standardized logging (incl. optional syslog).
+	Also, improve portability of alloca.
+	Add long polling support
+	Improve max nonce auto-adjustment with some basic algebra.
+	miner.h: pad out work_restart to max likely cache line size
+	Introduce ability to interrupt hash scanners in the middle of scanning.
+2011-03-15  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.7.2.
+	Fix Windows build, that broke with yasm integration
+	Merge branch 'master' of https://github.com/fleger/cpuminer into tmp
+	Move all RPC I/O to separate thread.
+	sha256_*.c: trim trailing whitespace
+	Makefile.am: neaten minerd sources list
+2011-03-12  fleger  <florian6.leger@laposte.net>
+	Fixed yasm version check
+	Merge remote-tracking branch 'upstream/master'
+	Revert "Fixed yasm version check if yasm version ≥ 1.1.0"
+	This reverts commit da1fd227bf2cc56c6f9a7ea42bd2c8b05f781f06.
+2011-03-11  Jeff Garzik  <jeff@garzik.org>
+	Merge branch 'sse2' of https://github.com/chromicant/cpuminer into tmp
+2011-03-08  fleger  <florian6.leger@laposte.net>
+	Fixed yasm version check if yasm version ≥ 1.1.0
+2011-03-07  Mark Crichton  <crichton@gmail.com>
+	Make sure we don't check for yasm version if we don't have yasm
+2011-03-07  Jeff Garzik  <jeff@garzik.org>
+	Fix warnings in sse2_64 implementation.
+2011-03-07  Mark Crichton  <crichton@gmail.com>
+	X86_64 SSE2 support for Linux
+2011-03-03  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.7.1.
+	Make CURL follow redirects.
+	Suggested by prcarter.
+	sha256_4way: skip last 3 rounds.
+	Pointed out by several people, including Raulo.
+2011-02-21  Raulo  <p987341@gmail.com>
+	Changes to make the 4-way code compile on Intel Compiler
+2011-02-17  Jeff Garzik  <jeff@garzik.org>
+	Show date/time when proof-of-work is found.
+	Mark hash success as unlikely, using __builtin_expect() intrinsic
+	example-cfg.json: improve comments
+	Extract get-work logic into separate function.
+2011-02-13  Jeff Garzik  <jeff@garzik.org>
+	Add support for JSON-format configuration file
+	Release version 0.7.
+	Turn off target testing for release, as some strange results appeared.
+2011-02-10  Jeff Garzik  <jeff@garzik.org>
+	Use bswap_32 from byteswap.h, if __builtin_bswap() is not available
+	Re-use CURL object, thereby caching DNS and HTTP connections where possible.
+2011-02-04  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.6.1.
+	Fix max-nonce auto-adjustment logic to actually work
+	Move verbose proof-of-work/target comparison display into -D (debug)
+	sha*.c: remove debug statement, which is redundant to hashmeter output
+2011-02-03  Jeff Garzik  <jeff@garzik.org>
+	Add --retry-pause, to set length of pause time between failure retries
+2011-02-03  Jeff Garzik  <jeff@garzik.org>
+	Continue scanhash, even if high 32 bits are zero.
+	Previously, we would stop the scan if the high 32 bits of the hash were zero,
+	as a quick shortcut for testing the full hash.  If this quick test succeeded,
+	we would pass the work to the server for full validation.
+	Change this logic to perform full validation inside minerd, so that work may
+	be resumed more quickly if hash > target.
+2011-02-03  Jeff Garzik  <jeff@garzik.org>
+	Display proof-of-work hash when one is discovered
+2011-01-30  Jeff Garzik  <jeff@garzik.org>
+	Remove "PROOF OF WORK FOUND?" debug output; redundant.
+2011-01-29  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.6.
+	Dynamically adjust time spent hashing current work unit, to meet target
+	Pass max-nonce as arg to each sha256 algo.
+	Should be an equivalent transformation, with no behavior changes.
+	Code movement: move second hash time sampling to main miner loop
+2011-01-29  Jeff Garzik  <jeff@garzik.org>
+	Replace ___constant_swab32() with gcc's __builtin_bswap32
+	http://www.bitcoin.org/smf/index.php?topic=1925.msg34827#msg34827
+	Credit: lfm
+2011-01-29  Jeff Garzik  <jeff@garzik.org>
+	sha256_4way minor optimizations
+	http://www.bitcoin.org/smf/index.php?topic=820.msg40022#msg40022
+	Credit: BeeCee1
+2011-01-29  Jeff Garzik  <jeff@garzik.org>
+	Fix non-working short options -q and -r N, by listing them in optstring.
+2011-01-20  Jeff Garzik  <jeff@garzik.org>
+	README: mention CFLAGS on *nix builds
+2010-12-29  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.5.
+	Rather than sleep-loop, main thread waits for all threads to exit.
+2010-12-28  Jeff Garzik  <jeff@garzik.org>
+	Improve CURL HTTP request error diagnostics.
+	Improve JSON-RPC result/error checking, and improve error diagnostic output.
+2010-12-27  Jeff Garzik  <jeff@garzik.org>
+	Add --quiet option, to disable hashmeter output.
+	Release version 0.3.3.
+	sha256_cryptopp asm: byteswap input words
+	Move 32-bit swap code into miner.h, for sharing.
+2010-12-24  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.3.2.
+	sha256_via: ensure that found nonce is copied back into output data buffer
+	Also, some minor cleanups, removing unused args.
+2010-12-20  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.3.1.
+	sha256_via: ensure proper data area is fully checksummed
+2010-12-19  Jeff Garzik  <jeff@garzik.org>
+	Handle temporary JSON failures (due to server reboot, etc.)
+2010-12-18  Jeff Garzik  <jeff@garzik.org>
+	README: update win32 build insns
+	Release version 0.3.
+	sha256_4way: work around gcc 4.5.x bug by always inlining ROTR and SHR
+2010-12-07  Jeff Garzik  <jeff@garzik.org>
+	Display version on minerd --help usage output.
+	sha256_cryptopp: Add crypto++ 32-bit assembly implementation
+2010-12-06  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.2.2.
+	Remove 'experimental' marker from VIA padlock implementation.
+	sha256_4way: do not include unnecessary headers, when !4way
+	Reported by lfm
+	sha256_via: align tmp_hash1 to 128, to avoid stack clobber
+	Reported by lfm
+	Avoid null deref in command line arg processing.
+	Reported by lfm.
+2010-11-29  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.2.1.
+	submit_work: increase string buffer, to avoid overflow
+	Add Crypto++ sha256 implementation (C only, ASM elided for now)
+2010-11-27  Jeff Garzik  <jeff@garzik.org>
+	Move sha256_generic into its own .o build output.  Const-ify midstate param.
+	Release version 0.2.
+	Clean up multi-algorithm selection and display
+	sha256_4way: patch proper nonce into data block
+	sha256_via: add further comments on byte-swapping work
+	miner.h: include sys/time.h for struct timeval definition
+	Add experimental (read: probably broken) VIA padlock support.
+	Improve and modularize compile-time CPU detection.
+	Ideally, we should move this to autoconf.
+	s/__SSE__/__SSE2__/
+	Windows build tweaks.
+	Note that 4way is experimental
+	sha256_4way: perform 16m hashes, not 64k, per invocation
+	Improve hash performance statistics.
+	Improve --help output.  Mention --help in README.
+	Drop all Windows DLL in same dir as minerd.exe
+	Correct -a command line help.
+	Add tcatm's 4way SSE2 sha256 implementation.
+	README: add win32 installer instructions
+	Add Windows installer creation script, mknsis.sh.
+2010-11-26  Jeff Garzik  <jeff@garzik.org>
+	Release version 0.1.2.
+	README: update dependency list and build instructions
+	Build on Windows using mingw32.
+	Build jansson 1.3 in-tree, if not present on system.
+	Makefile.am: add compat.h, to correct 'make distcheck' failures
+	Introduce compat.h, for Win32 builds
+	Replace argp with getopt_long
+	Link with pthreads lib, if present.  Remove GNU-specific asprintf usage.
+2010-11-25  Jeff Garzik  <jeff@garzik.org>
+	code movement: move submit_work() above hot path
+	Move utility routines to util.c.
+	sha256: Remove unused include arpa/inet.h
+	scanhash micro-optimizations
+	* don't bother returning nonce, we only need success/fail boolean
+	* don't needlessly read nonce pointer data, for each loop
+	Allocate work struct once, on stack, rather than alloc+free for each getwork.
+	Remove unused OpenSSL dependency.
+	Also, turn a few strings into #define'd constants.
+	RPC URL, username and password become arguments, rather than compile-time constants.
+	Small cleanups and comment additions.  Don't sleep after proof of work found.
+	Add GPLv2 header.
+	Do not build sha256_generic module separate from cpu-miner.c.  Version 0.1.1.
+	Convert over to autotools.  Release version 0.1.
+	sha256: note about bitcoin input data
+	Clean up protocol debugging output, and other cleanups.
+	sha256: Assume that input is already big endian.
+2010-11-24  Jeff Garzik  <jeff@garzik.org>
+	Remove byte reversing in submit_work()
+	Code movement.  Update stats counter more frequently.
+	Add command line parsing, and multiple threads.
+	Add timing info.  Remove BIGNUM PoW checks.
+	Clean up proof-of-work checking, attempting to address find-solution-too-fast problem.
+	Add some code comments.
+	Add README and license info.
+	Initial revision of CPU miner.
+	NOTE: non-functional (incorrectly thinks it finds solution, too quickly)
