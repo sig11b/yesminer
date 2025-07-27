@@ -189,4 +189,4 @@ Using an environment variable to set the proxy has the same effect as using the 
 
 ## AUTHOR
 
-This variant is maintained by sig11b@github. Most of the code in the current version of yesminer is based on sugarmaker by Kanon, which, in turn, is based on cpuminer by Pooler. Most major contributors are: Jeff Garzik, ArtForz, pooler, Alexander Peslyak (yespower algorithm implementation), Kanon, DLT Collaboration (sse2neon), sig11b@github 
+This variant is maintained by sig11b@github. Most of the code in the current version of yesminer is based on sugarmaker by Kanon, which, in turn, is based on cpuminer by Pooler. Most major contributors are: Jeff Garzik, ArtForz, pooler, Alexander Peslyak (yespower algorithm implementation), Kanon, DLT Collaboration (sse2neon), Sig11 (sig11b@github) 

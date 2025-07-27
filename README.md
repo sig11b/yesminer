@@ -8,7 +8,7 @@ Git tree:  https://github.com/sig11b/yesminer
 
 ## Changed or newly added features since the previous release:
 
-Version 2.6.0 - July 27, 2025
+Version 2.6.1 - July 27, 2025
 
 - Fix for old Clang on aarch64
 
