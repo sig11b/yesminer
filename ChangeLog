@@ -1,4 +1,7 @@
-2025-07-25  as  <sig11@bootblock.de>
+2025-07-27  as  <sig11@bootblock.de>
+	Version 2.6.1:
+	Clang 9 (termux on Android 5) for aarch64: Fix for -march=
+2025-07-26  as  <sig11@bootblock.de>
 	Version 2.6.0:
 	Makefile.am, configure.ac: more up to date and everything working
 	Documentation: more complete

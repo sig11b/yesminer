@@ -8,6 +8,10 @@ Git tree:  https://github.com/sig11b/yesminer
 
 ## Changed or newly added features since the previous release:
 
+Version 2.6.0 - July 27, 2025
+
+- Fix for old Clang on aarch64
+
 Version 2.6.0 - July 25, 2025
 
 - First release as yesminer
@@ -57,7 +61,8 @@ Version 2.6.0 - July 25, 2025
 ./configure
 make
 ```
-This will use `CFLAGS="-Wall -O3 -fomit-frame-pointer -march=native"`.
+This will use `CFLAGS="-Wall -O3 -fomit-frame-pointer -march=native"` or an
+equivalent `-march` flag if possible.
 To use custom `CFLAGS`, change the `configure` line to `./configure CFLAGS="-CUSTOM_FLAGS"`.
 However, if you want to experiment with the flags, make sure to include `-march=native` or a
 similar argument to get the best optimization.

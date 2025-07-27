@@ -1,4 +1,4 @@
-AC_INIT([yesminer],[2.6.0])
+AC_INIT([yesminer],[2.6.1])
 
 AC_PREREQ([2.69])
 AC_CANONICAL_TARGET
@@ -22,7 +22,8 @@ AC_PROG_RANLIB
 if test -n "$EXTERNAL_CFLAGS"; then
 	CFLAGS="$EXTERNAL_CFLAGS"
 else
-	CFLAGS='-Wall -O3 -fomit-frame-pointer -march=native'
+	CFLAGS='-Wall -O3 -fomit-frame-pointer'
+	AX_APPEND_COMPILE_FLAGS([-march=armv8-a+simd+crypto -march=native])
 fi
 
 dnl Checks for header files
