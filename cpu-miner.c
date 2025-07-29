@@ -135,7 +135,7 @@ int stratum_thr_id = -1;
 struct work_restart *work_restart = NULL;
 static struct stratum_ctx stratum;
 unsigned long snd,rcv,msecs;
-struct timeval tr,ts; 
+struct timeval tr,ts;
 
 pthread_mutex_t applog_lock;
 static pthread_mutex_t stats_lock;
@@ -653,6 +653,7 @@ out:
 
 static void share_result(int result, const char *reason)
 {
+	char r[345];
 	char s[345];
 	double hashrate;
 	int i;
@@ -668,15 +669,23 @@ static void share_result(int result, const char *reason)
 	pthread_mutex_unlock(&stats_lock);
 
 	sprintf(s, hashrate >= 1e3 ? "%.0f" : "%.1f", hashrate);
-	applog(LOG_INFO, "accepted %lums: %lu/%lu (%.2f%%), %s hash/s %s",
-		   msecs,accepted_count,
+	if (result)
+		sprintf(r, CL_GRN"Accepted share, yay!"CL_N);
+	else if (reason)
+		sprintf(r, CL_RED"Rejected: %s"CL_N , reason);
+	else
+		sprintf(r, CL_RED"Rejected: Unknown reason"CL_N);
+	if (opt_debug)
+		applog(LOG_INFO, "Acceptance: %lu/%lu (%.1f%%), %s Hash/s, latency: %lums, Result: %s",
+		   accepted_count,
 		   accepted_count + rejected_count,
 		   100. * accepted_count / (accepted_count + rejected_count),
-		   s,
-		   result ? "(yay!!!)" : "(booooo)");
-
-	if (opt_debug && reason)
-		applog(LOG_DEBUG, "DEBUG: reject reason: %s", reason);
+		   s,msecs,r);
+	else
+		applog(LOG_INFO, "Acceptance %lu/%lu, %s H/s, %lums, %s",
+		   accepted_count,
+		   accepted_count + rejected_count,
+		   s,msecs,r);
 }
 
 static bool submit_upstream_work(CURL *curl, struct work *work)
@@ -693,7 +702,7 @@ static bool submit_upstream_work(CURL *curl, struct work *work)
 			applog(LOG_DEBUG, "DEBUG: stale work detected, discarding");
 		return true;
 	}
-	
+
 	gettimeofday(&ts, NULL); // get current time
 	snd = ts.tv_sec*1000 + ts.tv_usec/1000; // calculate milliseconds
 

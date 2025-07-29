@@ -230,6 +230,15 @@ extern struct work_restart *work_restart;
 #define JSON_RPC_LONGPOLL	(1 << 0)
 #define JSON_RPC_QUIET_404	(1 << 1)
 
+// a very basic set of colors should be more than enough
+#define CL_N    "\x1B[0m"
+#define CL_RED  "\x1B[31m"
+#define CL_GRN  "\x1B[32m"
+#define CL_YLW  "\x1B[33m"
+#define CL_BLU  "\x1B[34m"
+#define CL_MAG  "\x1B[35m"
+#define CL_CYN  "\x1B[36m"
+
 extern void applog(int prio, const char *fmt, ...);
 extern json_t *json_rpc_call(CURL *curl, const char *url, const char *userpass,
 	const char *rpc_req, int *curl_err, int flags);
