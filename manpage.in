@@ -36,7 +36,7 @@ if the number of threads is a multiple of the number of processors.
 .TP
 \fB\-a\fR, \fB\-\-algo\fR=\fIALGORITHM\fR
 Set the hashing algorithm to use.
-ALGORITHM is case insensitive.
+\fIALGORITHM\fR is case insensitive.
 Possible values (using arbitrary capitalizations as examples) are:
 .nf
 .RS 11

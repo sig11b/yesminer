@@ -22,7 +22,7 @@ On start, the nice value of all miner threads is set to 19. On Linux, the schedu
 
 * **-a**, **--algo**=_ALGORITHM_ 
 
- Set the hashing algorithm to use. ALGORITHM is case insensitive. Possible values (using arbitrary capitalizations as examples) are: 
+ Set the hashing algorithm to use. _ALGORITHM_ is case insensitive. Possible values (using arbitrary capitalizations as examples) are: 
 ```
 
 cpupower         CPUchain
