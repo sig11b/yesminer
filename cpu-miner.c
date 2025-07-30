@@ -1102,6 +1102,8 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 		free(xnonce2str);
 	}
 
+	applog(LOG_INFO, CL_YLW"New stratum response: Job-ID=%s, difficulty=%f"CL_N,
+	       work->job_id, sctx->job.diff);
 	// all yescrypt and yespower variants have the same factor of 65536
 	diff_to_target(work->target, sctx->job.diff / 65536.0);
 }
