@@ -53,6 +53,20 @@ Run in the background as a daemon.
 Set an SSL certificate to use with the mining server.
 Only supported when using the HTTPS protocol.
 .TP
+\fB\-\-cert\-verify\fR
+Always require a valid server certificatte for SSL
+connections.
+
+By default, \fB@PACKAGE_NAME@\fR does not verify a peer's
+SSL certificate.
+This weakly secure default allows you to connect to pools that have not
+automatically renewed their expired certificate or to
+connect to servers with a self\-signed certificate.
+
+If you are mining on a server that always has a valid
+SSL certificate, you should use the \fB\-\-cert\-verify\fR
+option to protect against man\-in\-the\-middle attacks.
+.TP
 \fB\-\-coinbase\-addr\fR=\fIADDRESS\fR
 Set a payout address for solo mining.
 This is only used in getblocktemplate mode,

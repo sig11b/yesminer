@@ -218,6 +218,7 @@ extern bool want_stratum;
 extern bool have_stratum;
 extern enum algos opt_algo;
 extern char *opt_cert;
+extern bool opt_cert_no_verify;
 extern char *opt_proxy;
 extern long opt_proxy_type;
 extern bool use_syslog;

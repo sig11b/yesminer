@@ -423,6 +423,12 @@ json_t *json_rpc_call(CURL *curl, const char *url,
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
 	rc = curl_easy_perform(curl);
+	if ((rc == CURLE_PEER_FAILED_VERIFICATION) && opt_cert_no_verify) {
+		applog(LOG_WARNING, CL_MAG"Warning: JSON-RPC: %s. Continuing anyway."CL_N, curl_err_str);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+		rc = curl_easy_perform(curl);
+	}
 	if (curl_err != NULL)
 		*curl_err = rc;
 	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_rc);
@@ -1135,6 +1141,12 @@ bool stratum_connect(struct stratum_ctx *sctx, const char *url)
 	curl_easy_setopt(curl, CURLOPT_CONNECT_ONLY, 1);
 
 	rc = curl_easy_perform(curl);
+	if ((rc == CURLE_PEER_FAILED_VERIFICATION) && opt_cert_no_verify) {
+		applog(LOG_WARNING, CL_MAG"Warning: Stratum: %s. Continuing anyway."CL_N, sctx->curl_err_str);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+		rc = curl_easy_perform(curl);
+	}
 	if (rc) {
 		applog(LOG_ERR, "Stratum connection failed: %s", sctx->curl_err_str);
 		curl_easy_cleanup(curl);

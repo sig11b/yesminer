@@ -126,6 +126,7 @@ static int pk_script_size;
 static unsigned char pk_script[42];
 static char coinbase_sig[101] = "";
 char *opt_cert;
+bool opt_cert_no_verify=true;
 char *opt_proxy;
 long opt_proxy_type;
 struct thr_info *thr_info;
@@ -167,6 +168,7 @@ static char const usage_bottom[] = "\
   -u, --user=USERNAME   username for mining server\n\
   -p, --pass=PASSWORD   password for mining server\n\
       --cert=FILE       certificate for mining server using SSL\n\
+      --cert-verify     always verify SSL certificate (default: don't verify)\n\
   -x, --proxy=[PROTOCOL://]HOST[:PORT]  connect through a proxy\n\
   -t, --threads=N       number of miner threads (default: number of processors)\n\
   -r, --retries=N       number of times to retry if a network call fails\n\
@@ -216,6 +218,7 @@ static struct option const options[] = {
 #endif
 	{ "benchmark", 0, NULL, 1005 },
 	{ "cert", 1, NULL, 1001 },
+	{ "cert-verify", 0, NULL, 1019 },
 	{ "coinbase-addr", 1, NULL, 1013 },
 	{ "coinbase-sig", 1, NULL, 1015 },
 	{ "config", 1, NULL, 'c' },
@@ -1699,6 +1702,9 @@ static void parse_arg(int key, char *arg, char *pname)
 	case 1001:
 		free(opt_cert);
 		opt_cert = strdup(arg);
+		break;
+	case 1019:
+		opt_cert_no_verify = false;
 		break;
 	case 1005:
 		opt_benchmark = true;
