@@ -39,6 +39,7 @@
 #include "miner.h"
 
 #define LP_SCANTIME		60
+#define NUM_AVERAGE		20
 
 #ifdef __linux /* Linux specific policy and affinity management */
 #include <sched.h>
@@ -135,8 +136,9 @@ int longpoll_thr_id = -1;
 int stratum_thr_id = -1;
 struct work_restart *work_restart = NULL;
 static struct stratum_ctx stratum;
-unsigned long snd,rcv,msecs;
+long long snd,rcv,msecs;
 struct timeval tr,ts;
+long long starttime;
 
 pthread_mutex_t applog_lock;
 static pthread_mutex_t stats_lock;
@@ -144,6 +146,10 @@ static pthread_mutex_t stats_lock;
 static unsigned long accepted_count = 0L;
 static unsigned long rejected_count = 0L;
 static double *thr_hashrates;
+
+static unsigned long work_count = 0L;
+static double avg_n_diff;
+static double avg_diff = 0.0;
 
 #ifdef HAVE_GETOPT_LONG
 #include <getopt.h>
@@ -658,12 +664,45 @@ static void share_result(int result, const char *reason)
 {
 	char r[345];
 	char s[345];
-	double hashrate;
-	int i;
+	double hashrate, mps;
+	int i, counter;
+	double avg_n_hashrate = 0.0, avg_n_latency = 0.0, avg_n_mps = 0.0;
+	static double last_hashrates[NUM_AVERAGE];
+	static double last_latencies[NUM_AVERAGE];
+	static double last_mps[NUM_AVERAGE];
+	static double avg_hashrate = 0.0;
+	static double avg_latency = 0.0;
+	static double avg_mps = 0.0;
+	static long long lastsharetime = 0;
 	
 	gettimeofday(&tr, NULL); // get current time
 	rcv = tr.tv_sec*1000 + tr.tv_usec/1000; // calculate milliseconds
 	msecs=rcv-snd;
+
+	if (lastsharetime == 0) lastsharetime = starttime; /* ternary is longer ;P */
+
+//	if (lastshares > 0){ /* without the use of starttime */
+	/*
+	 * it is important to measure and average the minutes per share (mps),
+	 * and not the shares per minute (spm)!
+	 * Only for the final report, we take the reciprocal.
+	 */
+	mps = ((double)(rcv-lastsharetime))/(60000.0);
+	if (opt_debug) {
+		applog(LOG_DEBUG, "time since last share %f sec", 60.0*mps);
+		applog(LOG_DEBUG, "shares/min from this time  %f", 1./mps);
+		applog(LOG_DEBUG, "shares/min on average  %f",
+		       avg_mps ? 1./avg_mps : 1./mps);
+		applog(LOG_DEBUG, "time between shares on average  %f sec",
+		       avg_mps ? 60.0*avg_mps : 60.0*mps);
+	}
+//	}
+	/*
+	 * getting the time again is rather silly when we just did so. So we'll use
+	 * rcv and the time between shares is measured from rcv to rcv.
+	 */
+	lastsharetime = rcv;
+
 	hashrate = 0.;
 	pthread_mutex_lock(&stats_lock);
 	for (i = 0; i < opt_n_threads; i++)
@@ -679,16 +718,89 @@ static void share_result(int result, const char *reason)
 	else
 		sprintf(r, CL_RED"Rejected: Unknown reason"CL_N);
 	if (opt_debug)
-		applog(LOG_INFO, "Acceptance: %lu/%lu (%.1f%%), %s Hash/s, latency: %lums, Result: %s",
+		applog(LOG_INFO, "Accepted: %lu of %lu (%.1f%%), %s Hash/s, latency: %lums, Result: %s",
 		   accepted_count,
 		   accepted_count + rejected_count,
 		   100. * accepted_count / (accepted_count + rejected_count),
 		   s,msecs,r);
 	else
-		applog(LOG_INFO, "Acceptance %lu/%lu, %s H/s, %lums, %s",
+		applog(LOG_INFO, "Accepted %lu of %lu, %s H/s, %lums, %s",
 		   accepted_count,
 		   accepted_count + rejected_count,
 		   s,msecs,r);
+
+	avg_hashrate = (hashrate + (double)(accepted_count + rejected_count - 1) * avg_hashrate)
+	             / (double)(accepted_count + rejected_count);
+	avg_latency = ((double)msecs + (double)(accepted_count + rejected_count - 1) * avg_latency)
+	            / (double)(accepted_count + rejected_count);
+	//if ((accepted_count + rejected_count) > 1) /* without the use of starttime (s/1/2/ and s/0/1/) */
+	avg_mps = (mps + (double)(accepted_count + rejected_count - 1) * avg_mps)
+	        / (double)(accepted_count + rejected_count - 0);
+
+	counter = (accepted_count + rejected_count) % NUM_AVERAGE;
+	last_hashrates[counter] = hashrate;
+	last_latencies[counter] = (double)msecs;
+	last_mps[counter] = mps;
+	if (counter == 0) {
+		applog(LOG_INFO,CL_YLW"          |    YesMINER              /'|"CL_N);
+		applog(LOG_INFO,CL_YLW" [)=======/    Mining Statistics    (  |=======(]"CL_N);
+		applog(LOG_INFO,CL_YLW"        ./     (every %2d shares)     \\,|"CL_N,NUM_AVERAGE);
+
+		struct timeval tv_now;
+		gettimeofday(&tv_now, NULL);
+		applog(LOG_INFO, CL_YLW"Mining"CL_N": %.*s for %d hours %.0f minutes",
+		       strcspn(algo_names[opt_algo]," "),
+		       algo_names[opt_algo],
+		       (tv_now.tv_sec*1000+tv_now.tv_usec/1000-starttime)/(3600000),
+		       (double)((tv_now.tv_sec*1000+tv_now.tv_usec/1000-starttime) % 3600000)/(60000.));
+
+		char *ap;
+		ap = strstr(rpc_url, "://");
+		ap = ap ? ap + 3 : rpc_url;
+		applog(LOG_INFO, CL_YLW"Connected to"CL_N": %s", ap);
+		applog(LOG_INFO, CL_YLW"Connected as"CL_N": %s", rpc_user);
+
+		for (i = 0; i < NUM_AVERAGE; i++) {
+			avg_n_hashrate += last_hashrates[i];
+			avg_n_latency += last_latencies[i];
+			avg_n_mps += last_mps[i];
+		}
+		avg_n_hashrate /= NUM_AVERAGE;
+		avg_n_latency /= NUM_AVERAGE;
+		avg_n_mps /= NUM_AVERAGE;
+
+		sprintf(s, avg_hashrate >= 1e3 ? "%.0f" : "%.1f", avg_hashrate);
+		sprintf(r, avg_n_hashrate >= 1e3 ? "%.0f" : "%.1f", avg_n_hashrate);
+		applog(LOG_INFO,
+		       CL_YLW"Average hashrate  "CL_N": %s H/s (all time) %s H/s (last %d shares)",
+		       s, r, NUM_AVERAGE);
+		// Without the use of starttime, the calculation for the first batch
+		// would be wrong, because it would need NUM_AVERAGE-1 as denominator.
+		// The easiest solution was to skip it and use
+		//if (accepted_count + rejected_count > NUM_AVERAGE)
+		//else
+		// [code for only printing all time average]
+		applog(LOG_INFO,
+		       CL_YLW"Average shares/min"CL_N": %.2f (all time) %.2f (last %d shares)",
+		       1.0/avg_mps, 1.0/avg_n_mps, NUM_AVERAGE);
+		if (opt_debug)
+			applog(LOG_INFO,
+			       CL_YLW"Average time/share"CL_N": %.2f sec (all time) %.2f sec (last %d shares)",
+			       60.0*avg_mps, 60.0*avg_n_mps, NUM_AVERAGE);
+		applog(LOG_INFO,
+		       CL_YLW"Average latency   "CL_N": %.1f ms (all time) %.1f ms (last %d shares)",
+		       avg_latency, avg_n_latency, NUM_AVERAGE);
+		if (work_count >= NUM_AVERAGE)
+			applog(LOG_INFO,
+			       CL_YLW"Average difficulty"CL_N": %.4f (all time) %.4f (last %d jobs)",
+			       avg_diff, avg_n_diff, NUM_AVERAGE);
+		else
+			applog(LOG_INFO,
+			       CL_YLW"Average difficulty"CL_N": %.4f (all time)", avg_diff);
+		applog(LOG_INFO,
+		       CL_YLW"Percentage of accepted shares"CL_N": %.1f%% of submitted shares",
+		       100. * accepted_count / (accepted_count + rejected_count));
+	}
 }
 
 static bool submit_upstream_work(CURL *curl, struct work *work)
@@ -1065,6 +1177,7 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 {
 	unsigned char merkle_root[64];
 	int i;
+	static double last_diffs[NUM_AVERAGE];
 
 	pthread_mutex_lock(&sctx->work_lock);
 
@@ -1098,6 +1211,10 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 
 	pthread_mutex_unlock(&sctx->work_lock);
 
+	// all yescrypt and yespower variants have the same factor of 65536
+	diff_to_target(work->target, sctx->job.diff / 65536.0);
+
+	/* the rest is logging etc. */
 	if (opt_debug) {
 		char *xnonce2str = abin2hex(work->xnonce2, work->xnonce2_len);
 		applog(LOG_DEBUG, "DEBUG: job_id='%s' extranonce2=%s ntime=%08x",
@@ -1105,10 +1222,51 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 		free(xnonce2str);
 	}
 
-	applog(LOG_INFO, CL_YLW"New stratum response: Job-ID=%s, difficulty=%f"CL_N,
-	       work->job_id, sctx->job.diff);
-	// all yescrypt and yespower variants have the same factor of 65536
-	diff_to_target(work->target, sctx->job.diff / 65536.0);
+	/* Older candidate formats. I started to prefer to not color
+	   the numbers, but only the "event" - like for accept/reject
+	char *ap;
+	ap = strstr(rpc_url, "://");
+	ap = ap ? ap + 3 : rpc_url;
+	applog(LOG_INFO, "New job: "CL_YLW"Job-ID=%s, difficulty=%f"CL_N, work->job_id, sctx->job.diff);
+	applog(LOG_INFO, "   from: "CL_YLW"%s"CL_N, ap);
+	applog(LOG_INFO, "New job from: "CL_YLW"%s"CL_N, ap);
+	applog(LOG_INFO, "              "CL_YLW"Job-ID=%s, difficulty=%f"CL_N, work->job_id, sctx->job.diff);
+	applog(LOG_INFO, "New "CL_YLW"%s"CL_N" job: "CL_YLW"ID=%s"CL_N", "CL_YLW"difficulty=%.4f"CL_N,
+	int apl = strlen(ap);
+	if (apl > 27)
+	applog(LOG_INFO, CL_CYN"New job"CL_N" (%.10s[..]%s): ID=%s, difficulty=%.4f",
+	       ap, ap+apl-12, work->job_id, sctx->job.diff);
+	else
+	applog(LOG_INFO, CL_CYN"New job"CL_N" (%s): ID=%s, difficulty=%.4f",
+	       ap, work->job_id, sctx->job.diff);
+	*/
+	applog(LOG_INFO, CL_CYN"New job"CL_N" (%.*s): ID=%s, difficulty=%.4f",
+	       strcspn(algo_names[opt_algo]," "),
+	       algo_names[opt_algo],
+	       work->job_id,
+	       sctx->job.diff);
+
+	/* the follwoing builds the statistics values which will be printed
+	 * elsewhere. Right now in share_result() */
+	work_count++;
+	avg_diff = (sctx->job.diff + (double)(work_count - 1) * avg_diff)
+	         / (double)work_count;
+
+	int work_counter;
+	work_counter = work_count % NUM_AVERAGE;
+	if (work_count < NUM_AVERAGE) {
+		last_diffs[work_counter] = sctx->job.diff / NUM_AVERAGE;
+		avg_n_diff = 0.0;
+		for (i = 0; i < NUM_AVERAGE; i++)
+			avg_n_diff += last_diffs[i];
+	}
+	else {
+		/* after the array is filled, we can use the short-cut of
+		 * 1 out, 1 in. After all this is done for every job. */
+		avg_n_diff -= last_diffs[work_counter];
+		last_diffs[work_counter] = sctx->job.diff / NUM_AVERAGE;
+		avg_n_diff += last_diffs[work_counter];
+	}
 }
 
 static void *miner_thread(void *userdata)
@@ -1998,6 +2156,11 @@ int main(int argc, char *argv[])
 		if (have_stratum)
 			tq_push(thr_info[stratum_thr_id].q, strdup(rpc_url));
 	}
+
+	/* store the start time for statistics later on */
+	struct timeval tv_start;
+	gettimeofday(&tv_start, NULL);
+	starttime = tv_start.tv_sec*1000 + tv_start.tv_usec/1000;
 
 	/* start mining threads */
 	for (i = 0; i < opt_n_threads; i++) {
