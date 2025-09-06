@@ -104,6 +104,12 @@ bool setup_variant()
 		params.r = 32;
 		params.pers = (const uint8_t*) "The gods had gone away, and the ritual of the religion continued senselessly, uselessly.";
 		break;
+	case ALGO_YESPOWER_ITCHAIN:
+		params.version = YESPOWER_1_0;
+		params.N = 1024;
+		params.r = 8;
+		params.pers = NULL;
+		break;
 	case ALGO_YESPOWER_IOTS:
 		params.version = YESPOWER_1_0;
 		params.N = 2048;
@@ -116,7 +122,7 @@ bool setup_variant()
 		params.r = 32;
 		params.pers = (const uint8_t*) "IsotopeC";
 		break;
-	case ALGO_YESPOWER_ITC:
+	case ALGO_YESPOWER_ITCOIN:
 		params.version = YESPOWER_1_0;
 		params.N = 2048;
 		params.r = 32;
@@ -214,7 +220,7 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 		be32enc(&data.u32[19], ++n);
 
 		if (opt_algo == ALGO_YESCRYPT) {
-		// a specialty of the coins that call their algo scrypt
+		// a specialty of the coins that call their algo yescrypt
 			params.pers = (const uint8_t*) data.u8;
 			//params.pers = data.u8;
 			params.perslen = 80;

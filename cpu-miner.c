@@ -1352,6 +1352,7 @@ static void *miner_thread(void *userdata)
 			// this is not important at all.
 			if (opt_algo == ALGO_YESCRYPT ||
 			    opt_algo == ALGO_YESCRYPT_R8 ||
+			    opt_algo == ALGO_YESPOWER_ITCHAIN ||
 			    opt_algo == ALGO_YESPOWER_TIDE)
 				max64 = 1499;
 			else

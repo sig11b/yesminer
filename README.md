@@ -8,24 +8,21 @@ Git tree:  https://github.com/sig11b/yesminer
 
 ## Changed or newly added features since the previous release:
 
-Version 2.6.1 - July 27, 2025
+Version 2.6.2 - TBD
 
-- Fix for old Clang on aarch64
+- Colored and more informative output:
+  * latency (by Overdrive5)
+  * statistics
+- Allow expired SSL certificates and add option --cert-verify
+- Added Yespower variant:
+  * Interchained (ITC) (and renamed historic yespowerITC)
 
-Version 2.6.0 - July 25, 2025
-
-- First release as yesminer
-- 10-30% speedup on ARM (due to sse2neon.h)
-- Added all currently relevant and historic variants:
-  * yescrypt, yescryptR(8,16,32)
-  * cpupower, yespowerADVC, yespowerBlake256,
-    yespowerEQPAY, yespowerLTNCG, yespowerMGPC,
-    yespowerTIDE, yespowerARWN, yespowerRES
-- Fix power2b bug on ARM or with clang
+See [NEWS](NEWS) for summaries of older changes.
 
 ## Supported algorithms:
 
 - cpupower - CPUchain
+- interchained - Interchained
 - power2b - MircoBitcoin
 - yescrypt - GlobalBost-Y, Myriad, Unitus
 - yescryptR16 - Fennec, GoldCash, ELI
@@ -45,7 +42,7 @@ Version 2.6.0 - July 25, 2025
 - yespowerARWN - ArowanaCoin
 - yespowerIOTS - IOTS
 - yespowerISO - IsotopeC
-- yespowerITC - Intercoin
+- yespowerITCOIN - Intercoin
 - yespowerLITB - LightBit
 - yespowerRES - Resistance
 

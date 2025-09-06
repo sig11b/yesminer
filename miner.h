@@ -155,6 +155,7 @@ struct work_restart {
 
 enum algos {
 	ALGO_YESPOWER_CPU,
+	ALGO_YESPOWER_ITCHAIN,
 	ALGO_YESPOWER_POWER2B,
 	ALGO_YESCRYPT,
 	ALGO_YESCRYPT_R8,
@@ -175,7 +176,7 @@ enum algos {
 	ALGO_YESPOWER_ARWN,
 	ALGO_YESPOWER_IOTS,
 	ALGO_YESPOWER_ISO,
-	ALGO_YESPOWER_ITC,
+	ALGO_YESPOWER_ITCOIN,
 	ALGO_YESPOWER_LITB,
 	ALGO_YESPOWER_RES,
 };
@@ -190,6 +191,7 @@ static const char *algo_names[] = {
 	[ALGO_YESPOWER_CPU]	= "cpupower         CPUchain",
 	[ALGO_YESPOWER_BLAKE256]= "yespowerBlake256 untested (Dogemone has incompatible net protocols)",
 	[ALGO_YESPOWER_EQPAY]	= "yespowerEQPAY    EQPAY",
+	[ALGO_YESPOWER_ITCHAIN]	= "interchained     Interchained",
 	[ALGO_YESPOWER_LTNCG]	= "yespowerLTNCG    CrionicCoin, LTNCG",
 	[ALGO_YESPOWER_MGPC]	= "yespowerMGPC     MagpieCoin",
 	[ALGO_YESPOWER_POWER2B]	= "power2b          MircoBitcoin",
@@ -201,7 +203,7 @@ static const char *algo_names[] = {
 	[ALGO_YESPOWER_ARWN]	= "yespowerARWN     ArowanaCoin",
 	[ALGO_YESPOWER_IOTS]	= "yespowerIOTS     IOTS",
 	[ALGO_YESPOWER_ISO]	= "yespowerISO      IsotopeC",
-	[ALGO_YESPOWER_ITC]	= "yespowerITC      Intercoin",
+	[ALGO_YESPOWER_ITCOIN]	= "yespowerITCOIN   Intercoin",
 	[ALGO_YESPOWER_LITB]	= "yespowerLITB     LightBit",
 	[ALGO_YESPOWER_RES]	= "yespowerRES      Resistance",
 };
