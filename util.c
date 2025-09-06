@@ -1557,6 +1557,12 @@ bool stratum_handle_method(struct stratum_ctx *sctx, const char *s)
 		ret = stratum_set_difficulty(sctx, params);
 		goto out;
 	}
+	if (!strcasecmp(method, "mining.set_extranonce")) {
+		applog(LOG_WARNING,CL_MAG"Warning: stratum wants "
+		       "to set extranonce. Not yet handled."CL_N);
+		ret = true; // TODO: implement XNSUB
+		goto out;
+	}
 	if (!strcasecmp(method, "client.reconnect")) {
 		ret = stratum_reconnect(sctx, params);
 		goto out;
