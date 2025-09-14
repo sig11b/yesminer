@@ -662,10 +662,10 @@ out:
 
 static void share_result(int result, const char *reason)
 {
-	char r[345];
 	char s[345];
+	char t[345];
 	double hashrate, mps;
-	int i, counter;
+	int i, tot_count, counter;
 	double avg_n_hashrate = 0.0, avg_n_latency = 0.0, avg_n_mps = 0.0;
 	static double last_hashrates[NUM_AVERAGE];
 	static double last_latencies[NUM_AVERAGE];
@@ -709,35 +709,32 @@ static void share_result(int result, const char *reason)
 		hashrate += thr_hashrates[i];
 	result ? accepted_count++ : rejected_count++;
 	pthread_mutex_unlock(&stats_lock);
+	tot_count = accepted_count + rejected_count;
 
 	sprintf(s, hashrate >= 1e3 ? "%.0f" : "%.1f", hashrate);
 	if (result)
-		sprintf(r, CL_GRN"Accepted share, yay!"CL_N);
+		sprintf(t, CL_GRN"Accepted share, yay!"CL_N);
 	else if (reason)
-		sprintf(r, CL_RED"Rejected: %s"CL_N , reason);
+		sprintf(t, CL_RED"Rejected: %s"CL_N , reason);
 	else
-		sprintf(r, CL_RED"Rejected: Unknown reason"CL_N);
+		sprintf(t, CL_RED"Rejected: Unknown reason"CL_N);
 	if (opt_debug)
 		applog(LOG_INFO, "Accepted: %lu of %lu (%.1f%%), %s Hash/s, latency: %lums, Result: %s",
-		   accepted_count,
-		   accepted_count + rejected_count,
-		   100. * accepted_count / (accepted_count + rejected_count),
-		   s,msecs,r);
+		   accepted_count, tot_count,
+		   100. * accepted_count / tot_count,
+		   s,msecs,t);
 	else
 		applog(LOG_INFO, "Accepted %lu of %lu, %s H/s, %lums, %s",
-		   accepted_count,
-		   accepted_count + rejected_count,
-		   s,msecs,r);
+		   accepted_count, tot_count,
+		   s,msecs,t);
 
-	avg_hashrate = (hashrate + (double)(accepted_count + rejected_count - 1) * avg_hashrate)
-	             / (double)(accepted_count + rejected_count);
-	avg_latency = ((double)msecs + (double)(accepted_count + rejected_count - 1) * avg_latency)
-	            / (double)(accepted_count + rejected_count);
-	//if ((accepted_count + rejected_count) > 1) /* without the use of starttime (s/1/2/ and s/0/1/) */
-	avg_mps = (mps + (double)(accepted_count + rejected_count - 1) * avg_mps)
-	        / (double)(accepted_count + rejected_count - 0);
+	update_avg(&avg_hashrate, hashrate, tot_count);
+	update_avg(&avg_latency, (double)msecs, tot_count);
+	// without the use of starttime:
+	// if (tot_count > 1) update_avg(&avg_mps, mps, tot_count -1);
+	update_avg(&avg_mps, mps, tot_count);
 
-	counter = (accepted_count + rejected_count) % NUM_AVERAGE;
+	counter = tot_count % NUM_AVERAGE;
 	last_hashrates[counter] = hashrate;
 	last_latencies[counter] = (double)msecs;
 	last_mps[counter] = mps;
@@ -770,10 +767,10 @@ static void share_result(int result, const char *reason)
 		avg_n_mps /= NUM_AVERAGE;
 
 		sprintf(s, avg_hashrate >= 1e3 ? "%.0f" : "%.1f", avg_hashrate);
-		sprintf(r, avg_n_hashrate >= 1e3 ? "%.0f" : "%.1f", avg_n_hashrate);
+		sprintf(t, avg_n_hashrate >= 1e3 ? "%.0f" : "%.1f", avg_n_hashrate);
 		applog(LOG_INFO,
 		       CL_YLW"Average hashrate  "CL_N": %s H/s (all time) %s H/s (last %d shares)",
-		       s, r, NUM_AVERAGE);
+		       s, t, NUM_AVERAGE);
 		// Without the use of starttime, the calculation for the first batch
 		// would be wrong, because it would need NUM_AVERAGE-1 as denominator.
 		// The easiest solution was to skip it and use
@@ -799,7 +796,7 @@ static void share_result(int result, const char *reason)
 			       CL_YLW"Average difficulty"CL_N": %.4f (all time)", avg_diff);
 		applog(LOG_INFO,
 		       CL_YLW"Percentage of accepted shares"CL_N": %.1f%% of submitted shares",
-		       100. * accepted_count / (accepted_count + rejected_count));
+		       100. * accepted_count / tot_count);
 	}
 }
 
@@ -1248,9 +1245,9 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 
 	/* the follwoing builds the statistics values which will be printed
 	 * elsewhere. Right now in share_result() */
+
 	work_count++;
-	avg_diff = (sctx->job.diff + (double)(work_count - 1) * avg_diff)
-	         / (double)work_count;
+	update_avg(&avg_diff, sctx->job.diff, work_count);
 
 	int work_counter;
 	work_counter = work_count % NUM_AVERAGE;
@@ -1278,7 +1275,10 @@ static void *miner_thread(void *userdata)
 	uint32_t start_nonce = 0xffffffffU / opt_n_threads * thr_id;
 	uint32_t end_nonce = 0xffffffffU / opt_n_threads * (thr_id + 1) - 0x20;
 	char s[16];
+	char t[16];
 	int i;
+	unsigned long bench_count=0;
+	double avg_hashrate = 0.0;
 
 	/* Set worker threads to nice 19 and then preferentially to SCHED_IDLE
 	 * and if that fails, then SCHED_BATCH. No need for this to be an
@@ -1400,9 +1400,12 @@ static void *miner_thread(void *userdata)
 			for (i = 0; i < opt_n_threads && thr_hashrates[i]; i++)
 				hashrate += thr_hashrates[i];
 			pthread_mutex_unlock(&stats_lock);
+			bench_count++;
+			update_avg(&avg_hashrate, hashrate, bench_count);
 			if (i == opt_n_threads) {
-				sprintf(s, hashrate >= 1e3 ? "%.0f" : "%.1f", hashrate);
-				applog(LOG_INFO, "Total: %s hash/s", s);
+				sprintf(s, avg_hashrate >= 1e3 ? "%.0f" : "%.1f", avg_hashrate);
+				sprintf(t, hashrate >= 1e3 ? "%.0f" : "%.1f", hashrate);
+				applog(LOG_INFO, CL_YLW"Total"CL_N": %s hash/s (all time) %s hash/s (now)", s, t);
 			}
 		}
 

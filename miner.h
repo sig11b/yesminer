@@ -255,6 +255,7 @@ extern int timeval_subtract(struct timeval *result, struct timeval *x,
 	struct timeval *y);
 extern bool fulltest(const uint32_t *hash, const uint32_t *target);
 extern void diff_to_target(uint32_t *target, double diff);
+extern double update_avg(double *avg, double sample, unsigned long count);
 
 struct stratum_job {
 	char *job_id;

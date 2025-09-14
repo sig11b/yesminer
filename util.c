@@ -917,6 +917,18 @@ void diff_to_target(uint32_t *target, double diff)
 	}
 }
 
+/* Update an average stored in *avg assuming that it was built from
+ * count-1 previous samples and that sample is the count-th and newest
+ * sample.
+ * Numerical accuracy is not the goal.
+ * No checking for count=0 */
+double update_avg(double *avg, double sample, unsigned long count)
+{
+	*avg = (sample + (double)(count - 1) * *avg)
+	            / (double)(count);
+	return *avg;
+}
+
 #ifdef WIN32
 #define socket_blocks() (WSAGetLastError() == WSAEWOULDBLOCK)
 #else
