@@ -130,7 +130,36 @@ static inline void le32enc(void *pp, uint32_t x)
 #define JSON_LOAD_FILE(path, err_ptr) json_load_file(path, err_ptr)
 #endif
 
-#define USER_AGENT PACKAGE_NAME "/" PACKAGE_VERSION
+#define USER_AGENT0 PACKAGE_NAME "/" PACKAGE_VERSION
+
+// Windows and MacOS are neither tested nor supported, but this
+// test should be simple enough
+#ifdef __ANDROID__
+#define USER_AGENT1 USER_AGENT0 "/Android"
+#elif defined __linux__
+#define USER_AGENT1 USER_AGENT0 "/Linux"
+#elif defined _WIN32
+#define USER_AGENT1 USER_AGENT0 "/Windows"
+#elif defined __APPLE__
+#define USER_AGENT1 USER_AGENT0 "/MacOS"
+#else
+#define USER_AGENT1 USER_AGENT0 "/"
+#endif
+
+// i386 is neither tested nor supported, but the test should work
+#ifdef __aarch64__
+#define USER_AGENT2 USER_AGENT1 "-ARMv8"
+#elif defined __arm__
+#define USER_AGENT2 USER_AGENT1 "-ARMv7"
+#elif defined __x86_64__
+#define USER_AGENT2 USER_AGENT1 "-x86_64"
+#elif defined __i386__
+#define USER_AGENT2 USER_AGENT1 "-i386"
+#else
+#define USER_AGENT2 USER_AGENT1
+#endif
+
+#define USER_AGENT USER_AGENT2 "->github.com/sig11b"
 
 void sha256_init(uint32_t *state);
 void sha256_transform(uint32_t *state, const uint32_t *block, int swap);
