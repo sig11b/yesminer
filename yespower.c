@@ -203,8 +203,8 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 {
 	union {
 		uint8_t u8[8];
-		uint32_t u32[20];
-	} data;
+		uint32_t u32[46];
+	} data = { 0 };
 	union {
 		yespower_binary_t yb;
 		uint32_t u32[7];
@@ -212,9 +212,64 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 	uint32_t n = pdata[19] - 1;
 	const uint32_t Htarg = ptarget[7];
 	int i;
-	
+	bool received_eqp_roots = false;
+	uint8_t eqproots[] = { 0xb8,0x42,0xea,0x73,
+	                       0xbe,0x5f,0xb5,0x92,
+	                       0xf1,0x34,0x70,0xf9,
+	                       0xcc,0x31,0xb9,0x26,
+	                       0xf5,0x0f,0x19,0x1c,
+	                       0x7e,0x8c,0xec,0x8f,
+	                       0x7e,0xe9,0xdb,0xcc,
+	                       0xcd,0x02,0x38,0x1c,
+	                       0x56,0xe8,0x1f,0x17,
+	                       0x1b,0xcc,0x55,0xa6,
+	                       0xff,0x83,0x45,0xe6,
+	                       0x92,0xc0,0xf8,0x6e,
+	                       0x5b,0x48,0xe0,0x1b,
+	                       0x99,0x6c,0xad,0xc0,
+	                       0x01,0x62,0x2f,0xb5,
+	                       0xe3,0x63,0xb4,0x21 };
+// For EQPAY the lower 64 extra bytes are the bytes above which are already
+// converted to the endianness that the hash function expects.
+// For EQPAY the upper 37 extra bytes are essentially padding with zeros.
+// They need to be:
+// - 32 bytes of zeros (accomplished by initializing them with 0)
+// - followed by 4 bytes of 0xff (luckily this is independent of endianness)
+// - and a final 0x00.
+//	                       0x00,0x00,0x00,0x00,
+//	                       0x00,0x00,0x00,0x00,
+//	                       0x00,0x00,0x00,0x00,
+//	                       0x00,0x00,0x00,0x00,
+//	                       0x00,0x00,0x00,0x00,
+//	                       0x00,0x00,0x00,0x00,
+//	                       0x00,0x00,0x00,0x00,
+//	                       0x00,0x00,0x00,0x00,
+//	                       0xff,0xff,0xff,0xff,0x00 };
+
 	for (i = 0; i < 19; i++)
 		be32enc(&data.u32[i], pdata[i]);
+
+	if (opt_algo == ALGO_YESPOWER_EQPAY) {
+//		memcpy(&data.u32[20], eqproots, 101);
+//		memcpy(&data.u32[20], eqproots, 64);
+		for (i = 20; i < 36; i++) {
+			be32enc(&data.u32[i], pdata[i]);
+			if (pdata[i]) received_eqp_roots = true; // i.e. false when all are zero
+		}
+		if (!received_eqp_roots) {
+			if (opt_debug)
+				applog(LOG_DEBUG,"scanhash_yespower for EQPAY: "
+				       "falling back to using hard coded root defaults.");
+			memcpy(&data.u32[20], eqproots, 64);
+		}
+		if (opt_debug) {
+			char s[129];
+			bin2hex(s, (unsigned char *)&data.u32[20], 64);
+			applog(LOG_DEBUG,"scanhash_yespower: added EQPAY roots: %s", s);
+		}
+		// the remaining 4 bytes of 0xff:
+		data.u32[44] = 0xffffffff;
+	}
 
 	do {
 		be32enc(&data.u32[19], ++n);
@@ -230,7 +285,8 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 			if (yespower_tls_blake(data.u8, 80, &params, &hash.yb))
 				abort();
 		} else {
-			if (yespower_tls(data.u8, 80, &params, &hash.yb))
+			if (yespower_tls(data.u8, opt_algo==ALGO_YESPOWER_EQPAY ? 181 : 80 ,
+				         &params, &hash.yb))
 				abort();
 		}
 

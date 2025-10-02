@@ -1365,24 +1365,44 @@ out:
 static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 {
 	const char *job_id, *prevhash, *coinb1, *coinb2, *version, *nbits, *ntime;
+	const char *eqpdata;
 	size_t coinb1_size, coinb2_size;
 	bool clean, ret = false;
-	int merkle_count, i;
+	int merkle_count, i, j=0;
 	json_t *merkle_arr;
 	unsigned char **merkle;
 
-	job_id = json_string_value(json_array_get(params, 0));
-	prevhash = json_string_value(json_array_get(params, 1));
-	coinb1 = json_string_value(json_array_get(params, 2));
-	coinb2 = json_string_value(json_array_get(params, 3));
-	merkle_arr = json_array_get(params, 4);
+	job_id = json_string_value(json_array_get(params, j++));
+	prevhash = json_string_value(json_array_get(params, j++));
+	if (opt_algo == ALGO_YESPOWER_EQPAY){
+		// Note: eqpdata should be a constant string (= the roots) and should be:
+		// 73ea42b892b55fbef97034f126b931cc1c190ff58fec8c7eccdbe97e1c3802cd171fe856a655cc1be64583ff6ef8c0921be0485bc0ad6c99b52f620121b463e3
+		// The logic here allows for stratums not sending this string at all.
+		if (json_array_size(params) == 10) {
+			eqpdata = json_string_value(json_array_get(params, j++));
+			if (opt_debug) {
+				applog(LOG_DEBUG,
+				       "stratum_notify: EQPAY extra data: %s",eqpdata);
+				applog(LOG_DEBUG,
+				       "stratum_notify: EQPAY extra data length (should be 128): %d",
+				       strlen(eqpdata));
+			}
+		} else {
+			eqpdata = "0";
+			if (opt_debug)
+				applog(LOG_DEBUG,"stratum_notify: No EQPAY roots recevied");
+		}
+	}
+	coinb1 = json_string_value(json_array_get(params, j++));
+	coinb2 = json_string_value(json_array_get(params, j++));
+	merkle_arr = json_array_get(params, j++);
 	if (!merkle_arr || !json_is_array(merkle_arr))
 		goto out;
 	merkle_count = json_array_size(merkle_arr);
-	version = json_string_value(json_array_get(params, 5));
-	nbits = json_string_value(json_array_get(params, 6));
-	ntime = json_string_value(json_array_get(params, 7));
-	clean = json_is_true(json_array_get(params, 8));
+	version = json_string_value(json_array_get(params, j++));
+	nbits = json_string_value(json_array_get(params, j++));
+	ntime = json_string_value(json_array_get(params, j++));
+	clean = json_is_true(json_array_get(params, j));
 
 	if (!job_id || !prevhash || !coinb1 || !coinb2 || !version || !nbits || !ntime ||
 	    strlen(prevhash) != 64 || strlen(version) != 8 ||
@@ -1421,6 +1441,9 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 	free(sctx->job.job_id);
 	sctx->job.job_id = strdup(job_id);
 	hex2bin(sctx->job.prevhash, prevhash, 32);
+
+	if (opt_algo == ALGO_YESPOWER_EQPAY)
+		hex2bin(sctx->job.extra, eqpdata, strlen(eqpdata));
 
 	for (i = 0; i < sctx->job.merkle_count; i++)
 		free(sctx->job.merkle[i]);

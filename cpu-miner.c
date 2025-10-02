@@ -255,7 +255,7 @@ static struct option const options[] = {
 };
 
 struct work {
-	uint32_t data[32];
+	uint32_t data[46];
 	uint32_t target[8];
 
 	int height;
@@ -1203,8 +1203,12 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 		work->data[9 + i] = be32dec((uint32_t *)merkle_root + i);
 	work->data[17] = le32dec(sctx->job.ntime);
 	work->data[18] = le32dec(sctx->job.nbits);
-	work->data[20] = 0x80000000;
-	work->data[31] = 0x00000280;
+	//work->data[20] = 0x80000000; // none of the yespower/yescrypt algos use data[20]
+	//work->data[31] = 0x00000280; // none of the yespower/yescrypt algos use data[31]
+	if (opt_algo == ALGO_YESPOWER_EQPAY) {
+		for (i = 0; i < 16; i++)
+			work->data[20 + i] = le32dec((uint32_t *)sctx->job.extra + i);
+	}
 
 	pthread_mutex_unlock(&sctx->work_lock);
 

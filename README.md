@@ -13,9 +13,10 @@ Version 2.6.2 - TBD
 - Colored and more informative output:
   * latency (by Overdrive5)
   * statistics
-- Allow expired SSL certificates and add option --cert-verify
 - Added Yespower variant:
   * Interchained (ITC) (and renamed historic yespowerITC)
+- Fixed YespowerEQPAY (EQPAY)
+- Allow expired SSL certificates and add option --cert-verify
 
 See [NEWS](NEWS) for summaries of older changes.
 
@@ -31,7 +32,7 @@ See [NEWS](NEWS) for summaries of older changes.
 - yespower - BellCoin, Veco, SwampCoin
 - yespowerADVC - AdventureCoin
 - yespowerBlake256 - untested (Dogemone has incompatible net protocols)
-- yespowerEQPAY - EQPAY
+- yespowerEQPAY - EquityPay
 - yespowerLTNCG - CrionicCoin, LTNCG
 - yespowerMGPC - MagpieCoin
 - yespowerR16 - Yenten

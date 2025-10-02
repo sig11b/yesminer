@@ -219,7 +219,7 @@ static const char *algo_names[] = {
 	[ALGO_YESPOWER_ADVC]	= "yespowerADVC     AdventureCoin",
 	[ALGO_YESPOWER_CPU]	= "cpupower         CPUchain",
 	[ALGO_YESPOWER_BLAKE256]= "yespowerBlake256 untested (Dogemone has incompatible net protocols)",
-	[ALGO_YESPOWER_EQPAY]	= "yespowerEQPAY    EQPAY",
+	[ALGO_YESPOWER_EQPAY]	= "yespowerEQPAY    EquityPay",
 	[ALGO_YESPOWER_ITCHAIN]	= "interchained     Interchained",
 	[ALGO_YESPOWER_LTNCG]	= "yespowerLTNCG    CrionicCoin, LTNCG",
 	[ALGO_YESPOWER_MGPC]	= "yespowerMGPC     MagpieCoin",
@@ -289,6 +289,7 @@ extern double update_avg(double *avg, double sample, unsigned long count);
 struct stratum_job {
 	char *job_id;
 	unsigned char prevhash[32];
+	unsigned char extra[64];
 	size_t coinbase_size;
 	unsigned char *coinbase;
 	unsigned char *xnonce2;
