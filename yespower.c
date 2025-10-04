@@ -213,6 +213,20 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 	const uint32_t Htarg = ptarget[7];
 	int i;
 	bool received_eqp_roots = false;
+// For EQPAY, the extra data is the following:
+// - the uint256 hashStateRoot and the uint256 hashUTXORoot
+//   So far this is a constant. Converted into the correct endianness, this
+//   constant is the one stored in eqproots[] below.
+//   However, the stratum may send these roots, so we allow for flexible roots.
+// - a prevoutStake "COutPoint (=uint256, uint32)" for the PoW block.
+//   For PoW this will be a uint256 set to zero and a uint32 set to
+//   SEQUENCE_FINAL=0xffffffff
+//   This will be enforced (mostly via initialization), independently if stratum
+//   sends the full extra data or not (see util.c for details on how anything
+//   beyond 64 bytes is discarded).
+// - a PoS/delegate unsigned char for the PoW block set to 0x00
+//   Enforced as prevoutStake above.
+// See also eqpay's source: src/primitives/block.h src/primitives/transaction.h
 	uint8_t eqproots[] = { 0xb8,0x42,0xea,0x73,
 	                       0xbe,0x5f,0xb5,0x92,
 	                       0xf1,0x34,0x70,0xf9,
@@ -229,13 +243,6 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 	                       0x99,0x6c,0xad,0xc0,
 	                       0x01,0x62,0x2f,0xb5,
 	                       0xe3,0x63,0xb4,0x21 };
-// For EQPAY the lower 64 extra bytes are the bytes above which are already
-// converted to the endianness that the hash function expects.
-// For EQPAY the upper 37 extra bytes are essentially padding with zeros.
-// They need to be:
-// - 32 bytes of zeros (accomplished by initializing them with 0)
-// - followed by 4 bytes of 0xff (luckily this is independent of endianness)
-// - and a final 0x00.
 //	                       0x00,0x00,0x00,0x00,
 //	                       0x00,0x00,0x00,0x00,
 //	                       0x00,0x00,0x00,0x00,
@@ -244,7 +251,8 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 //	                       0x00,0x00,0x00,0x00,
 //	                       0x00,0x00,0x00,0x00,
 //	                       0x00,0x00,0x00,0x00,
-//	                       0xff,0xff,0xff,0xff,0x00 };
+//	                       0xff,0xff,0xff,0xff,
+//	                       0x00 };
 
 	for (i = 0; i < 19; i++)
 		be32enc(&data.u32[i], pdata[i]);
@@ -267,7 +275,7 @@ int scanhash_yespower(int thr_id, uint32_t *pdata,
 			bin2hex(s, (unsigned char *)&data.u32[20], 64);
 			applog(LOG_DEBUG,"scanhash_yespower: added EQPAY roots: %s", s);
 		}
-		// the remaining 4 bytes of 0xff:
+		// the only non-zero part of the COutPoint:
 		data.u32[44] = 0xffffffff;
 	}
 

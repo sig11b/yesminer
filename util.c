@@ -1365,7 +1365,7 @@ out:
 static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 {
 	const char *job_id, *prevhash, *coinb1, *coinb2, *version, *nbits, *ntime;
-	const char *eqpdata;
+	const char *eqpdata = NULL;
 	size_t coinb1_size, coinb2_size;
 	bool clean, ret = false;
 	int merkle_count, i, j=0;
@@ -1388,7 +1388,6 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 				       strlen(eqpdata));
 			}
 		} else {
-			eqpdata = "0";
 			if (opt_debug)
 				applog(LOG_DEBUG,"stratum_notify: No EQPAY roots recevied");
 		}
@@ -1406,7 +1405,8 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 
 	if (!job_id || !prevhash || !coinb1 || !coinb2 || !version || !nbits || !ntime ||
 	    strlen(prevhash) != 64 || strlen(version) != 8 ||
-	    strlen(nbits) != 8 || strlen(ntime) != 8) {
+	    strlen(nbits) != 8 || strlen(ntime) != 8 ||
+	    (eqpdata && (strlen(eqpdata) < 128))) {
 		applog(LOG_ERR, "Stratum notify: invalid parameters");
 		goto out;
 	}
@@ -1442,8 +1442,11 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 	sctx->job.job_id = strdup(job_id);
 	hex2bin(sctx->job.prevhash, prevhash, 32);
 
-	if (opt_algo == ALGO_YESPOWER_EQPAY)
-		hex2bin(sctx->job.extra, eqpdata, strlen(eqpdata));
+	if (opt_algo == ALGO_YESPOWER_EQPAY && eqpdata)
+		// if eqpdata is sent at all, only the first 128/2 bytes are the roots
+		// and these roots are potentially different than the hard coded default
+		// see also yespower.c for more details
+		hex2bin(sctx->job.extra, eqpdata, 64);
 
 	for (i = 0; i < sctx->job.merkle_count; i++)
 		free(sctx->job.merkle[i]);
