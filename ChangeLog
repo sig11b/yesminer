@@ -1,4 +1,39 @@
+2025-10-05  as  <sig11@bootblock.de>
+	Version 2.6.2
+	last minute string size fix
+	Manual: update
+	Added historic JagaricoinR. RIP CPUchain. Update of coin names.
+2025-10-04  as  <sig11@bootblock.de>
+	EQPAY: the 2nd half of the extra data is not padding but PoS related.
+2025-10-03  as  <sig11@bootblock.de>
+	Fix EQPAY (requires padded roots)
+	Credit should go to barrystyle and his miner
+	https://github.com/barrystyle/cpuminer-opt-eqpay
+	in which the zero-padding could be found.
+2025-09-15  as  <sig11@bootblock.de>
+	User agent: basic system info and a small ad (for now)
+2025-09-14  as  <sig11@bootblock.de>
+	Benchmark: better average. Statistcs: cleaner code.
+2025-09-06  as  <sig11@bootblock.de>
+	Ignore but not fail on mining.set_extranonce
+	TODO: implenent extranonce subscribe (XNSUB)
+	Added variant: interchained (ITC)
+2025-09-05  as  <sig11@bootblock.de>
+	Output: regular statistics and info
+2025-08-07  as  <sig11@bootblock.de>
+	Flexible handling of SSL server certificate problems
+	- fixes sugarmaker#40 "expired certificate" (upstream)
+	- implemented --cert-verify option
+2025-07-30  as  <sig11@bootblock.de>
+	Formatting typo in man page
+	Report stratum assigned difficulty and job ID
+2025-07-29  as  <sig11@bootblock.de>
+	Submitted results: Colored & always print rejection reason
+2025-07-28  Overdrive5  <40124431+Overdrive5@users.noreply.github.com>
+	Add work submission latency measurement feature
+	This is sugarmaker#53 (upstream) by Overdrive5 applied here
 2025-07-27  as  <sig11@bootblock.de>
+	Typos and cosmetics
 	Version 2.6.1:
 	Clang 9 (termux on Android 5) for aarch64: Fix for -march=
 2025-07-26  as  <sig11@bootblock.de>

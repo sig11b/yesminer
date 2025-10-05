@@ -8,7 +8,7 @@ Git tree:  https://github.com/sig11b/yesminer
 
 ## Changed or newly added features since the previous release:
 
-Version 2.6.2 - TBD
+Version 2.6.2 - October 5, 2025
 
 - Colored and more informative output:
   * latency (by Overdrive5)

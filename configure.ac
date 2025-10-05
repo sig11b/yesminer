@@ -1,4 +1,4 @@
-AC_INIT([yesminer],[2.6.1])
+AC_INIT([yesminer],[2.6.2])
 
 AC_PREREQ([2.69])
 AC_CANONICAL_TARGET

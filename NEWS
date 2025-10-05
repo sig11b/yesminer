@@ -1,3 +1,14 @@
+Version 2.6.2 - October 5, 2025
+
+- Colored and more informative output:
+  * latency (by Overdrive5)
+  * statistics
+- Added Yespower variants:
+  * Interchained (ITC) (and renamed historic yespowerITC)
+  * JagaricoinR (historic)
+- Fixed YespowerEQPAY (EQPAY)
+- Allow expired SSL certificates and add option --cert-verify
+
 Version 2.6.1 - July 27, 2025
 
 - Fix for old Clang on aarch64
