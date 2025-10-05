@@ -6,7 +6,11 @@ yesminer - CPU miner for Yescrypt and Yespower cryptocurrencies
 
 ## SYNOPSIS
 
-**yesminer** [_OPTION_]... 
+**yesminer** **-a**|**--algo**=_ALGORITHM_ **-o**|**--url**=_URL_ [_OPTIONS_]... 
+
+**yesminer** **-a**|**--algo**=_ALGORITHM_ **--benchmark** [_OPTIONS_]... 
+
+**yesminer** **-h**|**--help** | **-V**|**--version** 
 
 ## DESCRIPTION
 
@@ -25,16 +29,16 @@ On start, the nice value of all miner threads is set to 19. On Linux, the schedu
  Set the hashing algorithm to use. _ALGORITHM_ is case insensitive. Possible values (using arbitrary capitalizations as examples) are: 
 ```
 
-cpupower         CPUchain
+interchained     Interchained
 power2b          MircoBitcoin
-yescrypt         GlobalBost-Y, Myriad, Unitus
-yescryptR16      Fennec, GoldCash, ELI
+yescrypt         GlobalBoost-Y, Myriad, Unitus
+yescryptR16      Fennec, GoldCash, BitWeb, Qoge, ELI
 yescryptR32      DMS, WAVI
 yescryptR8       BitZeny, Mateable
-yespower         BellCoin, Veco, SwampCoin
+yespower         BellCoin, Veco, SwampCoin, SprintPay
 yespowerADVC     AdventureCoin
 yespowerBlake256 untested (Dogemone has incompatible net protocols)
-yespowerEQPAY    EQPAY
+yespowerEQPAY    EquityPay
 yespowerLTNCG    CrionicCoin, LTNCG
 yespowerMGPC     MagpieCoin
 yespowerR16      Yenten
@@ -44,10 +48,12 @@ yespowerURX      UraniumX
 
 Historic algorithms:
 
+cpupower         CPUchain (classic only)
+yescryptR24      JagaricoinR
 yespowerARWN     ArowanaCoin
 yespowerIOTS     IOTS
 yespowerISO      IsotopeC
-yespowerITC      Intercoin
+yespowerITCOIN   Intercoin
 yespowerLITB     LightBit
 yespowerRES      Resistance
 
@@ -62,6 +68,9 @@ yespowerRES      Resistance
 * **--cert**=_FILE_ 
 
  Set an SSL certificate to use with the mining server. Only supported when using the HTTPS protocol. 
+* **--cert-verify** 
+
+ Always require a valid server certificatte for SSL connections. By default, **yesminer** does not verify a peer's SSL certificate. This weakly secure default allows you to connect to pools that have not automatically renewed their expired certificate or to connect to servers with a self-signed certificate. If you are mining on a server that always has a valid SSL certificate, you should use the **--cert-verify** option to protect against man-in-the-middle attacks. 
 * **--coinbase-addr**=_ADDRESS_ 
 
  Set a payout address for solo mining. This is only used in getblocktemplate mode, and only if the server does not provide a coinbase transaction. It can be either a base-58 address, or a bech32 address (BIP 173). 

@@ -1,9 +1,17 @@
-.TH @PACKAGE_NAME_UPPER@ 1 "@DATE@" "@PACKAGE_NAME@-@VERSION@"
+.TH @PACKAGE_NAME_UPPER@ 1 "@DATE@" "@PACKAGE_NAME@-@VERSION@" "User Manuals"
 .SH NAME
 @PACKAGE_NAME@ \- CPU miner for Yescrypt and Yespower cryptocurrencies
 .SH SYNOPSIS
 .B @PACKAGE_NAME@
-[\fIOPTION\fR]...
+\fB\-a\fR|\fB\-\-algo\fR=\fIALGORITHM\fR \fB\-o\fR|\fB\-\-url\fR=\fIURL\fR
+[\fIOPTIONS\fR]...
+.PP
+.B @PACKAGE_NAME@
+\fB\-a\fR|\fB\-\-algo\fR=\fIALGORITHM\fR \fB\-\-benchmark\fR
+[\fIOPTIONS\fR]...
+.PP
+.B @PACKAGE_NAME@
+\fB\-h\fR|\fB\-\-help\fR | \fB\-V\fR|\fB\-\-version\fR
 .SH DESCRIPTION
 .B @PACKAGE_NAME@
 is a multi-threaded CPU miner for Yescrypt and Yespower cryptocurrencies.
