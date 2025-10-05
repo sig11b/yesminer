@@ -62,6 +62,12 @@ bool setup_variant()
 		params.r = 16;
 		params.pers = (const uint8_t*) "Client Key";
 		break;
+	case ALGO_YESCRYPT_R24:
+		params.version = YESPOWER_0_5;
+		params.N = 4096;
+		params.r = 24;
+		params.pers = (const uint8_t*) "JagaricoinR";
+		break;
 	case ALGO_YESCRYPT_R32:
 		params.version = YESPOWER_0_5;
 		params.N = 4096;

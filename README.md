@@ -13,8 +13,9 @@ Version 2.6.2 - TBD
 - Colored and more informative output:
   * latency (by Overdrive5)
   * statistics
-- Added Yespower variant:
+- Added Yespower variants:
   * Interchained (ITC) (and renamed historic yespowerITC)
+  * JagaricoinR (historic)
 - Fixed YespowerEQPAY (EQPAY)
 - Allow expired SSL certificates and add option --cert-verify
 
@@ -22,14 +23,13 @@ See [NEWS](NEWS) for summaries of older changes.
 
 ## Supported algorithms:
 
-- cpupower - CPUchain
 - interchained - Interchained
 - power2b - MircoBitcoin
-- yescrypt - GlobalBost-Y, Myriad, Unitus
-- yescryptR16 - Fennec, GoldCash, ELI
+- yescrypt - GlobalBoost-Y, Myriad, Unitus
+- yescryptR16 - Fennec, GoldCash, BitWeb, Qoge, ELI
 - yescryptR32 - DMS, WAVI
 - yescryptR8 - BitZeny, Mateable
-- yespower - BellCoin, Veco, SwampCoin
+- yespower - BellCoin, Veco, SwampCoin, SprintPay
 - yespowerADVC - AdventureCoin
 - yespowerBlake256 - untested (Dogemone has incompatible net protocols)
 - yespowerEQPAY - EquityPay
@@ -40,6 +40,8 @@ See [NEWS](NEWS) for summaries of older changes.
 - yespowerTIDE - TideCoin
 - yespowerURX - UraniumX
 ### Historic algorithms:
+- cpupower - CPUchain (classic only)
+- yescryptR24 - JagaricoinR
 - yespowerARWN - ArowanaCoin
 - yespowerIOTS - IOTS
 - yespowerISO - IsotopeC

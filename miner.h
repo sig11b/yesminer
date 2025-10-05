@@ -183,7 +183,6 @@ struct work_restart {
 };
 
 enum algos {
-	ALGO_YESPOWER_CPU,
 	ALGO_YESPOWER_ITCHAIN,
 	ALGO_YESPOWER_POWER2B,
 	ALGO_YESCRYPT,
@@ -202,6 +201,8 @@ enum algos {
 	ALGO_YESPOWER_TIDE,
 	ALGO_YESPOWER_URX,
 	ALGO_NONE,              // ALGO_NONE separates the historic algos from the ones still in use
+	ALGO_YESPOWER_CPU,
+	ALGO_YESCRYPT_R24,
 	ALGO_YESPOWER_ARWN,
 	ALGO_YESPOWER_IOTS,
 	ALGO_YESPOWER_ISO,
@@ -211,13 +212,12 @@ enum algos {
 };
 
 static const char *algo_names[] = {
-	[ALGO_YESCRYPT]		= "yescrypt         GlobalBost-Y, Myriad, Unitus",
+	[ALGO_YESCRYPT]		= "yescrypt         GlobalBoost-Y, Myriad, Unitus",
 	[ALGO_YESCRYPT_R8]	= "yescryptR8       BitZeny, Mateable",
-	[ALGO_YESCRYPT_R16]	= "yescryptR16      Fennec, GoldCash, ELI",
+	[ALGO_YESCRYPT_R16]	= "yescryptR16      Fennec, GoldCash, BitWeb, Qoge, ELI",
 	[ALGO_YESCRYPT_R32]	= "yescryptR32      DMS, WAVI",
-	[ALGO_YESPOWER]		= "yespower         BellCoin, Veco, SwampCoin",
+	[ALGO_YESPOWER]		= "yespower         BellCoin, Veco, SwampCoin, SprintPay",
 	[ALGO_YESPOWER_ADVC]	= "yespowerADVC     AdventureCoin",
-	[ALGO_YESPOWER_CPU]	= "cpupower         CPUchain",
 	[ALGO_YESPOWER_BLAKE256]= "yespowerBlake256 untested (Dogemone has incompatible net protocols)",
 	[ALGO_YESPOWER_EQPAY]	= "yespowerEQPAY    EquityPay",
 	[ALGO_YESPOWER_ITCHAIN]	= "interchained     Interchained",
@@ -229,7 +229,9 @@ static const char *algo_names[] = {
 	[ALGO_YESPOWER_TIDE]	= "yespowerTIDE     TideCoin",
 	[ALGO_YESPOWER_URX]	= "yespowerURX      UraniumX",
 	[ALGO_NONE]		= "\0",
+	[ALGO_YESCRYPT_R24]	= "yescryptR24      JagaricoinR",
 	[ALGO_YESPOWER_ARWN]	= "yespowerARWN     ArowanaCoin",
+	[ALGO_YESPOWER_CPU]	= "cpupower         CPUchain (classic only)",
 	[ALGO_YESPOWER_IOTS]	= "yespowerIOTS     IOTS",
 	[ALGO_YESPOWER_ISO]	= "yespowerISO      IsotopeC",
 	[ALGO_YESPOWER_ITCOIN]	= "yespowerITCOIN   Intercoin",
