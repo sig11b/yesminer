@@ -804,7 +804,7 @@ static bool submit_upstream_work(CURL *curl, struct work *work)
 {
 	json_t *val, *res, *reason;
 	char data_str[2 * sizeof(work->data) + 1];
-	char s[345];
+	char s[445];
 	int i;
 	bool rc = false;
 
